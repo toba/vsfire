@@ -1,2 +1,5 @@
 .vscode
 images
+examples
+node_modules
+*.vsix

@@ -1,45 +1,36 @@
 {
-   "name": "firestore-rules",
-   "displayName": "Firestore Rules",
-   "description": "Firestore Rules syntax highlight",
-   "version": "1.0.0",
-   "publisher": "toba",
-   "icon": "images/logo.png",
-   "repository": {
-       "type": "git",
-       "url": "https://github.com/toba/firestore-rules.git"
-   },
-   "engines": {
-       "vscode": "^1.10.0"
-   },
-   "categories": [
-       "Languages"
-   ],
-   "contributes": {
-       "languages": [
-           {
-               "id": "firestore-rules",
-               "aliases": [
-                   "firestore-rules"
-               ],
-               "extensions": [
-                   "firestore-rules"
-               ],
-               "configuration": "./language-configuration.json"
-           }
-       ],
-       "grammars": [
-           {
-               "language": "Firestore Rules",
-               "scopeName": "source.bolt",
-               "path": "./syntaxes/firestorerules.tmLanguage.json"
-           }
-       ],
-       "snippets": [
-           {
-               "language": "bolt",
-               "path": "./snippets/bolt.json"
-           }
-       ]
-   }
+    "name": "vsfire",
+    "displayName": "Visual Studio Firebase Plugin",
+    "description": "Firestore Rules syntax highlight",
+    "version": "1.0.0",
+    "publisher": "toba",
+    "icon": "images/logo.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/toba/firestore-rules.git"
+    },
+    "engines": {
+        "vscode": "^1.10.0"
+    },
+    "categories": [
+        "Languages"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "firerules",
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "firerules",
+                "scopeName": "source.bolt",
+                "path": "./syntaxes/firestorerules.tmLanguage.json"
+            }
+        ]
+    },
+    "devDependencies": {
+        "vsce": "^1.31.1"
+    }
 }

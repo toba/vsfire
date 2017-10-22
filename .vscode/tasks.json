@@ -1,0 +1,23 @@
+{
+   "version": "2.0.0",
+   "tasks": [
+      {
+         "taskName": "Publish",
+         "command": "./node_modules/.bin/vsce",
+         "args": [
+            "publish"
+         ],
+         "group": "none",
+         "problemMatcher": []
+      },
+      {
+         "taskName": "Package",
+         "command": "./node_modules/.bin/vsce",
+         "args": [
+            "package"
+         ],
+         "group": "none",
+         "problemMatcher": []
+      }
+   ]
+}
