@@ -1,4 +1,4 @@
-# Firestore Rules Plugin
-Visual Studio Code syntax highlighting for [Firestore rules](https://cloud.google.com/firestore/docs/reference/security/)
+# Firestore Rules
+Basic [rules](https://cloud.google.com/firestore/docs/reference/security/) highlighting with plans for snippets and tips.
 
-https://code.visualstudio.com/docs/extensionAPI/extension-manifest
+![Basic example](./screenshots/basic.png)

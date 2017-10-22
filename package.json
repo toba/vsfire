@@ -22,7 +22,7 @@
                "id": "firerules",
                "extensions": [".rules", ".rule"],
                "aliases": ["Firebase Rules"],
-               "configuration": "./firerules.config.json"
+               "configuration": "./language-configuration.json"
             }
         ],
         "grammars": [
