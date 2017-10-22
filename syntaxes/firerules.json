@@ -1,0 +1,156 @@
+{
+   "//": "https://manual.macromates.com/en/language_grammars",
+   "comment": "Firestore Rules Syntax: version 1.0",
+   "scopeName": "source.firerules",
+   "fileTypes": [
+      "rule",
+      "rules"
+   ],
+   "firstLineMatch": "^service cloud.firestore",
+   "foldingStartMarker": "^\\{\\s*$",
+   "foldingStopMarker": "^\\s*\\}",
+   "name": "Firebase Rules",
+   "patterns": [
+      {
+         "comment": "match regular function like: function myFunc(arg) { … }",
+         "match": "\\b(function)\\s+([a-zA-Z_$]\\w*)?\\s*(\\()(.*?)(\\))",
+         "name": "meta.function.firerules",
+         "captures": {
+            "1": { "name": "storage.type.function.firerules" },
+            "2": { "name": "entity.name.function.firerules" },
+            "3": { "name": "punctuation.definition.parameters.begin.firerules" },
+            "4": { "name": "variable.parameter.function.firerules" },
+            "5": { "name": "punctuation.definition.parameters.end.firerules" }
+         }
+      }, {
+         "comment": "match rule function like: foo(arg) { … }",
+         "match": "\\b([a-zA-Z_$]\\w*)\\s*(\\()(.*?)(\\))([\\s\\n\\r])*(\\{)",
+         "name": "meta.function.firerules",
+         "captures": {
+            "1": { "name": "entity.name.function.firerules" },
+            "2": { "name": "punctuation.definition.parameters.begin.firerules" },
+            "3": { "name": "variable.parameter.function.firerules" },
+            "4": { "name": "punctuation.definition.parameters.end.firerules" },
+            "6": { "name": "meta.brace.curly.firerules" }
+         }
+      }, {
+         "comment": "match function like: myFunc(arg) = …",
+         "match": "\\b([a-zA-Z_$]\\w*)?\\s*(\\()(.*?)(\\))\\s*=\\s*",
+         "name": "meta.function.firerules",
+         "captures": {
+            "1": { "name": "entity.name.function.firerules" },
+            "2": { "name": "punctuation.definition.parameters.begin.firerules" },
+            "3": { "name": "variable.parameter.function.firerules" },
+            "4": { "name": "punctuation.definition.parameters.end.firerules" }
+         }      
+      }, {
+         "match": "\\b((0(x|X)[0-9a-fA-F]+)|([0-9]+(\\.[0-9]+)?))\\b",
+         "name": "constant.numeric.firerules"
+      }, {
+         "name": "string.quoted.single.firerules",
+         "patterns": [{
+            "match": "\\\\(x\\h{2}|[0-2][0-7]{,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.)",
+            "name": "constant.character.escape.firerules"
+         }],
+         "begin": "'",
+         "beginCaptures": {
+            "0": { "name": "punctuation.definition.string.begin.firerules" }
+         },
+         "end": "'",
+         "endCaptures": {
+            "0": { "name": "punctuation.definition.string.end.firerules" }
+         }       
+      }, {
+         "name": "string.quoted.double.firerules",
+         "patterns": [{
+            "match": "\\\\(x\\h{2}|[0-2][0-7]{,2}|3[0-6][0-7]|37[0-7]?|[4-7][0-7]?|.)",
+            "name": "constant.character.escape.firerules"
+         }],
+         "begin": "\"",
+         "beginCaptures": {
+            "0": { "name": "punctuation.definition.string.begin.firerules" }
+         },
+         "end": "\"",
+         "endCaptures": {
+            "0": { "name": "punctuation.definition.string.end.firerules" }
+         }     
+      }, {
+         "name": "comment.block.documentation.firerules",
+         "begin": "/\\*\\*(?!/)",
+         "captures": {
+            "0": { "name": "punctuation.definition.comment.firerules" }
+         },
+         "end": "\\*/"
+      }, {
+         "name": "comment.block.firerules",
+         "begin": "/\\*",
+         "captures": {
+            "0": { "name": "punctuation.definition.comment.firerules" }
+         },
+         "end": "\\*/"       
+      }, {
+         "name": "comment.line.double-slash.firerules",
+         "match": "(//).*$\\n?",
+         "captures": {
+            "1": { "name": "punctuation.definition.comment.firerules" }
+         }    
+      }, {
+         "match": "\\b(match)\\b",
+         "name": "storage.type"
+      }, {
+         "match": "\\b(return)\\b",
+         "name": "keyword.control"
+      }, {
+         "match": "\\b(read|write|validate|create|update|delete|index)\\b",
+         "name": "storage.modifier.firerules"
+      }, {
+         "match": "\\b(super|this)\\b",
+         "name": "variable.language"
+      }, {
+         "match": "\\b(now|root|data|auth|newData|null|true|false|Infinity|NaN|undefined)\\b",
+         "name": "constant.language"
+      }, {
+         "match": "\\b(String|Number|Boolean|Object|Any|Null|Map)\\b",
+         "name": "support.class.firerules"
+      }, {
+         "match": "!|%|&|\\*|\\-\\-|\\-|\\+\\+|\\+|~|===|==|=|!=|!==|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\\|\\||\\?\\:|\\*=|(?<!\\()/=|%=|\\+=|\\-=|&=|\\^=|\\b(in|instanceof|new|delete|typeof|void)\\b",
+         "name": "keyword.operator.firerules"
+      }, {
+         "match": "\\b\\$\\w\\b",
+         "comment": "Match $variable",
+         "name": "variable.language.firerules"
+      }, {
+         "name": "string.regexp.firerules",
+         "patterns": [{
+            "match": "\\\\.",
+            "name": "constant.character.escape.firerules"
+         }],
+         "begin": "(?<=[=(:]|^|return|&&|\\|\\||!)\\s*(/)(?![/*+{}?])",
+         "beginCaptures": {
+            "1": { "name": "punctuation.definition.string.begin.firerules" }
+         },
+         "end": "(/)[igm]*",
+         "endCaptures": {
+            "1": { "name": "punctuation.definition.string.end.firerules" }
+         }
+      }, {
+         "match": "\\;",
+         "name": "punctuation.terminator.statement.firerules"
+      }, {
+         "match": ",[ |\\t]*",
+         "name": "meta.delimiter.object.comma.firerules"
+      }, {
+         "match": "\\.",
+         "name": "meta.delimiter.method.period.firerules"
+      }, {
+         "match": "\\{|\\}",
+         "name": "meta.brace.curly.firerules"
+      }, {
+         "match": "\\(|\\)",
+         "name": "meta.brace.round.firerules"
+      }, {
+         "match": "\\[|\\]",
+         "name": "meta.brace.square.firerules"
+      }
+   ]
+ }

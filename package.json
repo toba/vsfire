@@ -19,15 +19,17 @@
     "contributes": {
         "languages": [
             {
-                "id": "firerules",
-                "configuration": "./language-configuration.json"
+               "id": "firerules",
+               "extensions": [".rules", ".rule"],
+               "aliases": ["Firebase Rules"],
+               "configuration": "./firerules.config.json"
             }
         ],
         "grammars": [
             {
-                "language": "firerules",
-                "scopeName": "firebase.rules",
-                "path": "./syntaxes/firestorerules.tmLanguage.json"
+               "language": "firerules",
+               "scopeName": "source.firerules",
+               "path": "./syntaxes/firerules.json"
             }
         ]
     },
