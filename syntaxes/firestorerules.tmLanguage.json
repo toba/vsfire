@@ -1,0 +1,230 @@
+{
+   "//": "taken from https://github.com/mhartington/lang-bolt",
+   "comment": "Bolt Syntax: version 0.1",
+   "fileTypes": [
+     "bolt"
+   ],
+   "firstLineMatch": "^#!/usr/bin/env node",
+   "foldingStartMarker": "^.*\\bfunction\\s*(\\w+\\s*)?\\([^\\)]*\\)(\\s*\\{[^\\}]*)?\\s*$",
+   "foldingStopMarker": "^\\s*\\}",
+   "name": "Bolt",
+   "patterns": [
+     {
+       "captures": {
+         "1": {
+           "name": "storage.type.function.bolt"
+         },
+         "2": {
+           "name": "entity.name.function.bolt"
+         },
+         "3": {
+           "name": "punctuation.definition.parameters.begin.bolt"
+         },
+         "4": {
+           "name": "variable.parameter.function.bolt"
+         },
+         "5": {
+           "name": "punctuation.definition.parameters.end.bolt"
+         }
+       },
+       "comment": "match regular function like: function myFunc(arg) { … }",
+       "match": "\\b(function)\\s+([a-zA-Z_$]\\w*)?\\s*(\\()(.*?)(\\))",
+       "name": "meta.function.bolt"
+     },
+     {
+       "captures": {
+         "1": {
+           "name": "entity.name.function.bolt"
+         },
+         "2": {
+           "name": "punctuation.definition.parameters.begin.bolt"
+         },
+         "3": {
+           "name": "variable.parameter.function.bolt"
+         },
+         "4": {
+           "name": "punctuation.definition.parameters.end.bolt"
+         },
+         "6": {
+           "name": "meta.brace.curly.bolt"
+         }
+       },
+       "comment": "match bolt function like: foo(arg) { … }",
+       "match": "\\b([a-zA-Z_$]\\w*)\\s*(\\()(.*?)(\\))([\\s\\n\\r])*(\\{)",
+       "name": "meta.function.bolt"
+     },
+     {
+       "captures": {
+         "1": {
+           "name": "entity.name.function.bolt"
+         },
+         "2": {
+           "name": "punctuation.definition.parameters.begin.bolt"
+         },
+         "3": {
+           "name": "variable.parameter.function.bolt"
+         },
+         "4": {
+           "name": "punctuation.definition.parameters.end.bolt"
+         }
+       },
+       "comment": "match function like: myFunc(arg) = …",
+       "match": "\\b([a-zA-Z_$]\\w*)?\\s*(\\()(.*?)(\\))\\s*=\\s*",
+       "name": "meta.function.bolt"
+     },
+     {
+       "match": "\\b((0(x|X)[0-9a-fA-F]+)|([0-9]+(\\.[0-9]+)?))\\b",
+       "name": "constant.numeric.bolt"
+     },
+     {
+       "begin": "'",
+       "beginCaptures": {
+         "0": {
+           "name": "punctuation.definition.string.begin.bolt"
+         }
+       },
+       "end": "'",
+       "endCaptures": {
+         "0": {
+           "name": "punctuation.definition.string.end.bolt"
+         }
+       },
+       "name": "string.quoted.single.bolt",
+       "patterns": [
+         {
+           "match": "\\\\(x\\h{2}|[0-2][0-7]{,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.)",
+           "name": "constant.character.escape.bolt"
+         }
+       ]
+     },
+     {
+       "begin": "\"",
+       "beginCaptures": {
+         "0": {
+           "name": "punctuation.definition.string.begin.bolt"
+         }
+       },
+       "end": "\"",
+       "endCaptures": {
+         "0": {
+           "name": "punctuation.definition.string.end.bolt"
+         }
+       },
+       "name": "string.quoted.double.bolt",
+       "patterns": [
+         {
+           "match": "\\\\(x\\h{2}|[0-2][0-7]{,2}|3[0-6][0-7]|37[0-7]?|[4-7][0-7]?|.)",
+           "name": "constant.character.escape.bolt"
+         }
+       ]
+     },
+     {
+       "begin": "/\\*\\*(?!/)",
+       "captures": {
+         "0": {
+           "name": "punctuation.definition.comment.bolt"
+         }
+       },
+       "end": "\\*/",
+       "name": "comment.block.documentation.bolt"
+     },
+     {
+       "begin": "/\\*",
+       "captures": {
+         "0": {
+           "name": "punctuation.definition.comment.bolt"
+         }
+       },
+       "end": "\\*/",
+       "name": "comment.block.bolt"
+     },
+     {
+       "captures": {
+         "1": {
+           "name": "punctuation.definition.comment.bolt"
+         }
+       },
+       "match": "(//).*$\\n?",
+       "name": "comment.line.double-slash.bolt"
+     },
+     {
+       "match": "\\b(type|path|is|extends)\\b",
+       "name": "storage.type.bolt"
+     },
+     {
+       "match": "\\b(return)\\b",
+       "name": "keyword.control.bolt"
+     },
+     {
+       "match": "\\b(read|write|validate|create|update|delete|index)\\b",
+       "name": "storage.modifier.bolt"
+     },
+     {
+       "match": "\\b(super|this)\\b",
+       "name": "variable.language.bolt"
+     },
+     {
+       "match": "\\b(now|root|data|auth|newData|null|true|false|Infinity|NaN|undefined)\\b",
+       "name": "constant.language.bolt"
+     },
+     {
+       "match": "\\b(String|Number|Boolean|Object|Any|Null|Map)\\b",
+       "name": "support.class.bolt"
+     },
+     {
+       "match": "!|%|&|\\*|\\-\\-|\\-|\\+\\+|\\+|~|===|==|=|!=|!==|<=|>=|<<=|>>=|>>>=|<>|<|>|!|&&|\\|\\||\\?\\:|\\*=|(?<!\\()/=|%=|\\+=|\\-=|&=|\\^=|\\b(in|instanceof|new|delete|typeof|void)\\b",
+       "name": "keyword.operator.bolt"
+     },
+     {
+       "match": "\\b\\$\\w\\b",
+       "comment": "Match $variable",
+       "name": "variable.language.bolt"
+     },
+     {
+       "begin": "(?<=[=(:]|^|return|&&|\\|\\||!)\\s*(/)(?![/*+{}?])",
+       "beginCaptures": {
+         "1": {
+           "name": "punctuation.definition.string.begin.bolt"
+         }
+       },
+       "end": "(/)[igm]*",
+       "endCaptures": {
+         "1": {
+           "name": "punctuation.definition.string.end.bolt"
+         }
+       },
+       "name": "string.regexp.bolt",
+       "patterns": [
+         {
+           "match": "\\\\.",
+           "name": "constant.character.escape.bolt"
+         }
+       ]
+     },
+     {
+       "match": "\\;",
+       "name": "punctuation.terminator.statement.bolt"
+     },
+     {
+       "match": ",[ |\\t]*",
+       "name": "meta.delimiter.object.comma.bolt"
+     },
+     {
+       "match": "\\.",
+       "name": "meta.delimiter.method.period.bolt"
+     },
+     {
+       "match": "\\{|\\}",
+       "name": "meta.brace.curly.bolt"
+     },
+     {
+       "match": "\\(|\\)",
+       "name": "meta.brace.round.bolt"
+     },
+     {
+       "match": "\\[|\\]",
+       "name": "meta.brace.square.bolt"
+     }
+   ],
+   "scopeName": "source.bolt"
+ }

@@ -1,0 +1,45 @@
+{
+   "name": "firestore-rules",
+   "displayName": "Firestore Rules",
+   "description": "Firestore Rules syntax highlight",
+   "version": "1.0.0",
+   "publisher": "thadeuluz",
+   "icon": "images/flash.png",
+   "repository": {
+       "type": "git",
+       "url": "git+https://github.com/ThadeuLuz/vsce-firebase-bolt.git"
+   },
+   "engines": {
+       "vscode": "^1.10.0"
+   },
+   "categories": [
+       "Languages"
+   ],
+   "contributes": {
+       "languages": [
+           {
+               "id": "firestore-rules",
+               "aliases": [
+                   "firestore-rules"
+               ],
+               "extensions": [
+                   "firestore-rules"
+               ],
+               "configuration": "./language-configuration.json"
+           }
+       ],
+       "grammars": [
+           {
+               "language": "Firestore Rules",
+               "scopeName": "source.bolt",
+               "path": "./syntaxes/bolt.tmLanguage.json"
+           }
+       ],
+       "snippets": [
+           {
+               "language": "bolt",
+               "path": "./snippets/bolt.json"
+           }
+       ]
+   }
+}
