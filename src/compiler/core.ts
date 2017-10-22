@@ -1,5 +1,4 @@
 import { Diagnostic } from "vscode-languageserver";
-
 import { CharacterCodes, Extension, Map, Path } from "./types";
 
 const enum Comparison {
