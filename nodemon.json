@@ -1,0 +1,14 @@
+{
+    "env": {
+        "NODE_ENV": "development"
+    },
+    "watch": [
+        "src/"
+    ],
+    "ignore": [
+        "src/**/*.test.ts"
+    ],
+    "exec": [
+        "ts-node"
+    ]
+}
