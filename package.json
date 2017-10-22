@@ -1,10 +1,10 @@
 {
     "name": "vsfire",
-    "displayName": "Firebase Plugin",
+    "displayName": "Firebase",
     "description": "Firestore Rules syntax highlight",
     "version": "1.0.0",
     "publisher": "toba",
-    "keywords": ["firebase"],
+    "keywords": ["firebase","firestore","rules"],
     "icon": "images/logo.png",
     "repository": {
         "type": "git",
