@@ -1,9 +1,10 @@
 {
     "name": "vsfire",
-    "displayName": "Visual Studio Firebase Plugin",
+    "displayName": "Firebase Plugin",
     "description": "Firestore Rules syntax highlight",
     "version": "1.0.0",
     "publisher": "toba",
+    "keywords": ["firebase"],
     "icon": "images/logo.png",
     "repository": {
         "type": "git",
@@ -25,7 +26,7 @@
         "grammars": [
             {
                 "language": "firerules",
-                "scopeName": "source.bolt",
+                "scopeName": "firebase.rules",
                 "path": "./syntaxes/firestorerules.tmLanguage.json"
             }
         ]
