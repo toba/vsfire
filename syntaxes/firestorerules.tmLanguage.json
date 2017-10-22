@@ -1,8 +1,8 @@
 {
    "//": "taken from https://github.com/mhartington/lang-bolt",
-   "comment": "Bolt Syntax: version 0.1",
+   "comment": "Firestore Rules Syntax: version 1.0",
    "fileTypes": [
-     "bolt"
+     "rule"
    ],
    "firstLineMatch": "^#!/usr/bin/env node",
    "foldingStartMarker": "^.*\\bfunction\\s*(\\w+\\s*)?\\([^\\)]*\\)(\\s*\\{[^\\}]*)?\\s*$",
