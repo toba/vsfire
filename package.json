@@ -4,15 +4,14 @@
    "description": "Firestore Security Rules syntax highlighting",
    "version": "1.1.0",
    "publisher": "toba",
-   "keywords": [
-      "firebase",
-      "firestore",
-      "rules"
-   ],
+   "keywords": ["firebase","firestore","rules"],
    "icon": "images/logo.png",
    "repository": {
-      "type": "git",
-      "url": "https://github.com/toba/firestore-rules.git"
+       "type": "git",
+       "url": "https://github.com/toba/vsfire.git"
+   },
+   "bugs": {
+     "url": "https://github.com/toba/vsfire/issues"
    },
    "engines": {
       "vscode": "^1.10.0"
@@ -35,23 +34,18 @@
       "languages": [
          {
             "id": "firerules",
-            "extensions": [
-               ".rules",
-               ".rule"
-            ],
-            "aliases": [
-               "Firebase Rules"
-            ],
+            "extensions": [".rules", ".rule"],
+            "aliases": ["Firebase Rules"],
             "configuration": "./language-configuration.json"
          }
-      ],
-      "grammars": [
+     ],
+     "grammars": [
          {
             "language": "firerules",
             "scopeName": "source.firerules",
             "path": "./syntaxes/firerules.json"
          }
-      ]
+     ]
    },
    "devDependencies": {
       "@types/node": "^8.0.46",

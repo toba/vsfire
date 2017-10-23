@@ -4,3 +4,5 @@ examples
 node_modules
 *.vsix
 out
+syntaxes/compare.ts
+syntaxes/sample.rules
