@@ -1754,9 +1754,9 @@ typed-rest-client@^0.9.0:
     tunnel "0.0.4"
     underscore "1.8.3"
 
-typescript@^2.6.0-rc:
-  version "2.6.0-rc"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.6.0-rc.tgz#6a8022e2dd3e7033f2dcf187cff7925ea3c8ac25"
+typescript@^2.5.3:
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.3.tgz#df3dcdc38f3beb800d4bc322646b04a3f6ca7f0d"
 
 uc.micro@^1.0.1, uc.micro@^1.0.3:
   version "1.0.3"

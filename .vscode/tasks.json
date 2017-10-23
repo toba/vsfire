@@ -32,6 +32,13 @@
          "args": ["run", "watch", "--loglevel", "silent"],
          "isBackground": true,
          "problemMatcher": "$tsc-watch"
+      },
+      {
+         "taskName": "Build",
+         "group": "build",
+         "command": "./node_modules/.bin/tsc -p tsconfig.json",
+         "type": "shell",
+         "problemMatcher": "$tsc"
       }
    ]
 }

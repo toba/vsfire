@@ -3,20 +3,21 @@
        "module": "commonjs",
        "target": "es6",
        "outDir": "./out",
-       "lib": [
-           "es6",
-           "dom"
-       ],
+       "lib": ["es6", "dom"],
        "sourceMap": true,
        "rootDir": ".",
        "noImplicitAny": true,
-       "newLine": "LF",
-       "allowJs": true,
+       "noImplicitThis": true,
+       "alwaysStrict": true,
+       "removeComments": true,
        "noUnusedLocals": true,
-       "noUnusedParameters": true
+       "strictNullChecks": false,
+       "newLine": "LF",
+       "allowJs": false,
+       "noUnusedParameters": true,
+       "allowSyntheticDefaultImports": false,
+       "typeRoots": ["./node_modules/@types"]
    },
-   "include": [
-       "./src/**/*",
-       "./test/**/*"
-   ]
+   "include": ["./src/extension.ts"],
+   "exclude": ["node_modules"]
 }

@@ -59,7 +59,7 @@
    "devDependencies": {
       "@types/node": "^8.0.46",
       "tslint": "^5.8.0",
-      "typescript": "^2.6.0-rc",
+      "typescript": "^2.5.3",
       "vsce": "^1.31.1"
    },
    "dependencies": {
