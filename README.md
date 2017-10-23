@@ -1,5 +1,5 @@
 # Firestore Rules
-Basic highlighting for new [Firestore security rules](https://cloud.google.com/firestore/docs/reference/security/). Priority for [additional language features](https://code.visualstudio.com/docs/extensionAPI/language-support), in decreasing order of likelihood that I'll get to it.
+Basic highlighting for new [Firestore security rules](https://cloud.google.com/firestore/docs/reference/security/). Priority for [additional language features](https://code.visualstudio.com/docs/extensionAPI/language-support), in decreasing order of likelihood that I'll get to it:
 
 - Completions (underway in a branch) then update syntax highlighting
 - Hovers
