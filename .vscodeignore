@@ -3,3 +3,4 @@ images
 examples
 node_modules
 *.vsix
+out
