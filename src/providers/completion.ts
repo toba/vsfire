@@ -1,13 +1,11 @@
 import * as vscode from "vscode";
+import grammar from "../grammar";
 
 export class RuleCompletionProvider implements vscode.CompletionItemProvider {
-   //private _completions:vscode.CompletionItem[];
-   //private _snippets:vscode.CompletionItem[];
-
    public provideCompletionItems(
-      _document:vscode.TextDocument,
-      _position:vscode.Position,
-      _token:vscode.CancellationToken):Thenable<vscode.CompletionItem[]> {
+      document:vscode.TextDocument,
+      position:vscode.Position,
+      token:vscode.CancellationToken):Thenable<vscode.CompletionItem[]> {
 
       return new Promise<vscode.CompletionItem[]>((resolve, _reject) => {
          //const completions:vscode.CompletionItem[] = [];
@@ -18,7 +16,11 @@ export class RuleCompletionProvider implements vscode.CompletionItemProvider {
          // const item = this.getItem(document, position, lineText, text);
 
          const item = new vscode.CompletionItem("test", vscode.CompletionItemKind.Field);
-       
+         console.log("document", document);
+         console.log("position", position);
+         console.log("token", token);
+
+         
         
          resolve([item]);
       });

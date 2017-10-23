@@ -16,7 +16,8 @@
        "allowJs": false,
        "noUnusedParameters": true,
        "allowSyntheticDefaultImports": false,
-       "typeRoots": ["./node_modules/@types"]
+       "typeRoots": ["./node_modules/@types"],
+       "baseUrl": "."
    },
    "include": ["./src/extension.ts"],
    "exclude": ["node_modules"]
