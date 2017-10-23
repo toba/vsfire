@@ -1,41 +1,17 @@
-import { workspace, ExtensionContext } from "vscode";
-import {
-   LanguageClient,
-   LanguageClientOptions,
-   ServerOptions, 
-   TransportKind } from "vscode-languageclient";
+import * as vscode from "vscode";
+import { PLSQLDefinitionProvider } from "./providers/definition";
+import { RuleSymbolProvider } from "./providers/symbol";
+import { RuleCompletionProvider } from "./providers/completion";
 
-/**
- * Activate the Firestore Security Rules language client.
- */
-export function activate(context: ExtensionContext) {
-	let serverModule = context.asAbsolutePath("server.js");
-   let debugOptions = { execArgv: ["--nolazy", "--debug=6009"] };
-	let serverOptions:ServerOptions = {
-		run : {
-         module: serverModule,
-         transport: TransportKind.ipc
-      },
-		debug: {
-         module: serverModule,
-         transport: TransportKind.ipc,
-         options: debugOptions
-      }
-	};
-	
-	let clientOptions:LanguageClientOptions = {
-		// Register the server for plain text documents
-		documentSelector: [{ scheme: "file", language: "plaintext" }],
-		synchronize: {
-			// Synchronize the setting section 'languageServerExample' to the server
-			configurationSection: 'lspSample',
-			// Notify the server about file changes to '.clientrc files contain in the workspace
-			fileEvents: workspace.createFileSystemWatcher("**/.clientrc")
-		}
-	};
-	
-	let client = new LanguageClient("firerules", "Firestore Security Rules", serverOptions, clientOptions).start();
-	
-	// register client so it can later be disposed
-	context.subscriptions.push(client);
+export function activate(context:vscode.ExtensionContext) {
+   // context.subscriptions.push(vscode.languages.registerHoverProvider('plsql', new PLSQLHoverProvider()));
+   context.subscriptions.push(vscode.languages.registerCompletionItemProvider('plsql', new RuleCompletionProvider(), '.', '\"'));
+   context.subscriptions.push(vscode.languages.registerDefinitionProvider('plsql', new PLSQLDefinitionProvider()));
+   // context.subscriptions.push(vscode.languages.registerReferenceProvider('plsql', new PLSQLReferenceProvider()));
+   // context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider('plsql', new PLSQLDocumentFormattingEditProvider()));
+   context.subscriptions.push(vscode.languages.registerDocumentSymbolProvider('plsql', new RuleSymbolProvider()));
+   // context.subscriptions.push(vscode.languages.registerWorkspaceSymbolProvider(new PLSQLWorkspaceSymbolProvider()));
+   // context.subscriptions.push(vscode.languages.registerRenameProvider('plsql', new PLSQLRenameProvider()));
+   // context.subscriptions.push(vscode.languages.registerSignatureHelpProvider('plsql', new PLSQLSignatureHelpProvider(), '(', ','));
+   // context.subscriptions.push(vscode.languages.registerCodeActionsProvider('plsql', new PLSQLCodeActionProvider()));
 }
