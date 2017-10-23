@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import grammar from "../grammar";
+import { find } from "../grammar";
 
 export class RuleCompletionProvider implements vscode.CompletionItemProvider {
    public provideCompletionItems(
@@ -20,8 +20,6 @@ export class RuleCompletionProvider implements vscode.CompletionItemProvider {
          console.log("position", position);
          console.log("token", token);
 
-         
-        
          resolve([item]);
       });
    }

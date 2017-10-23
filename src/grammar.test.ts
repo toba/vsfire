@@ -5,7 +5,15 @@ import { find } from "./grammar";
 
 describe("Grammar", () => {
    it("finds named TypeInfo", () => {
-      const info = find("math");
-      expect(info).is.not.null;
+      ["math", "document"].forEach(name => {
+         const info = find(name);
+         expect(info).to.exist;
+         expect(info).has.property("methods");
+      });
+
+      const info = find("token");
+      expect(info).to.exist;
+      expect(info).has.property("fields");
+      expect(info.fields).has.property("phone_number");
    });
 });

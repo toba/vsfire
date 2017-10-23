@@ -1,3 +1,5 @@
+import * as vscode from "vscode";
+
 interface MemberInfo {
    about?:string;
    aliases?:string[];
@@ -106,16 +108,38 @@ export function find(name:string):TypeInfo {
    return findChild(grammar, name);
 }
 
-function findChild(fields:{[key:string]:TypeInfo}, name:string):TypeInfo {
-   if (fields) {
-      const match = Reflect.ownKeys(fields).find(key => key == name);
-      if (match) { return fields[match]; }
-      // Reflect.ownKeys(t.fields).forEach(key => {
+export function suggestions(name:string):vscode.CompletionItem[] {
+   const info = find(name);
+   if (info && info.fields || info.methods) {
+      const items:vscode.CompletionItem[] = [];
+      
+      info.fields.forEach(f => {
+         items.push(new vscode.CompletionItem("", ""));
+      });
 
-      // });
+
+      return items;
 
    }
    return null;
+}
+
+function findChild(fields:{[key:string]:TypeInfo}, name:string):TypeInfo {
+   let info:TypeInfo = null;
+
+   if (fields) {
+      const match = Reflect.ownKeys(fields).find(key => key == name);
+
+      if (match) {
+         info = fields[match];
+      } else {
+         Reflect.ownKeys(fields).forEach(key => {
+            info = findChild(fields[key].fields, name);
+            if (info != null) { return; }
+         });
+      }
+   }
+   return info;
 }
 
 export default grammar;
