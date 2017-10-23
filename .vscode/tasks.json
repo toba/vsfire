@@ -18,6 +18,20 @@
          ],
          "group": "none",
          "problemMatcher": []
+      },
+      {
+         "taskName": "npm",
+         "command": "npm",
+         "type": "shell",
+         "presentation": {
+            "echo": false,
+            "reveal": "always",
+            "focus": false,
+            "panel": "shared"
+         },
+         "args": ["run", "watch", "--loglevel", "silent"],
+         "isBackground": true,
+         "problemMatcher": "$tsc-watch"
       }
    ]
 }

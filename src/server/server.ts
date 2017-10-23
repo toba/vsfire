@@ -1,80 +1,146 @@
-import * as cluster from "cluster";
-import * as net from "net";
-
-import { isNotificationMessage } from "vscode-jsonrpc/lib/messages";
 import {
-    StreamMessageReader,
-    StreamMessageWriter
+   IPCMessageReader, IPCMessageWriter, createConnection, IConnection,
+   TextDocuments, TextDocument, Diagnostic, DiagnosticSeverity, 
+   InitializeResult, TextDocumentPositionParams, CompletionItem, 
+	CompletionItemKind
 } from "vscode-languageserver";
 
-import { MessageEmitter, MessageLogOptions, MessageWriter, registerLanguageHandler } from "./connection";
-import { RemoteLanguageClient } from "./languageClient";
-import { Logger, PrefixedLogger, StdioLogger } from "./logging";
-import { SolidityService } from "./solidityService";
+// Create a connection for the server. The connection uses Node's IPC as a transport
+let connection: IConnection = createConnection(new IPCMessageReader(process), new IPCMessageWriter(process));
 
-/**
- * Creates a Logger prefixed with master or worker ID
- *
- * @param logger An optional logger to wrap, e.g. to write to a logfile. Defaults to STDIO
- */
-export function createClusterLogger(logger = new StdioLogger()): Logger {
-    return new PrefixedLogger(logger, cluster.isMaster ? "master" : `wrkr ${cluster.worker.id}`);
+// Create a simple text document manager. The text document manager
+// supports full document sync only
+let documents: TextDocuments = new TextDocuments();
+// Make the text document manager listen on the connection
+// for open, change and close text document events
+documents.listen(connection);
+
+// After the server has started the client sends an initilize request. The server receives
+// in the passed params the rootPath of the workspace plus the client capabilites. 
+//let workspaceRoot: string;
+connection.onInitialize((_params): InitializeResult => {
+	//workspaceRoot = params.rootPath;
+	return {
+		capabilities: {
+			// Tell the client that the server works in FULL text document sync mode
+			textDocumentSync: documents.syncKind,
+			// Tell the client that the server support code complete
+			completionProvider: {
+				resolveProvider: true
+			}
+		}
+	}
+});
+
+// The content of a text document has changed. This event is emitted
+// when the text document first opened or when its content has changed.
+documents.onDidChangeContent((change) => {
+	validateTextDocument(change.document);
+});
+
+// The settings interface describe the server relevant settings part
+interface Settings {
+	lspSample: ExampleSettings;
 }
 
-/** Options to `serve()` */
-export interface ServeOptions extends MessageLogOptions {
-    /** Amount of workers to spawn */
-    clusterSize: number;
-
-    /** Port to listen on for TCP LSP connections */
-    lspPort: number;
+// These are the example settings we defined in the client's package.json
+// file
+interface ExampleSettings {
+	maxNumberOfProblems: number;
 }
 
-/**
- * Starts up a cluster of worker processes that listen on the same TCP socket.
- * Crashing workers are restarted automatically.
- *
- * @param options
- * @param createLangHandler Factory function that is called for each new connection
- */
-export function serve(options: ServeOptions, createLangHandler = (remoteClient: RemoteLanguageClient) => new SolidityService(remoteClient)): void {
-    const logger = options.logger || createClusterLogger();
-    if (options.clusterSize > 1 && cluster.isMaster) {
-        logger.log(`Spawning ${options.clusterSize} workers`);
-        cluster.on("online", worker => {
-            logger.log(`Worker ${worker.id} (PID ${worker.process.pid}) online`);
-        });
-        cluster.on("exit", (worker, code, signal) => {
-            logger.error(`Worker ${worker.id} (PID ${worker.process.pid}) exited from signal ${signal} with code ${code}, restarting`);
-            cluster.fork();
-        });
-        for (let i = 0; i < options.clusterSize; ++i) {
-            cluster.fork();
-        }
-    } else {
-        let counter = 1;
-        const server = net.createServer(socket => {
-            const id = counter++;
-            logger.log(`Connection ${id} accepted`);
+// hold the maxNumberOfProblems setting
+let maxNumberOfProblems: number;
+// The settings have changed. Is send on server activation
+// as well.
+connection.onDidChangeConfiguration((change) => {
+	let settings = <Settings>change.settings;
+	maxNumberOfProblems = settings.lspSample.maxNumberOfProblems || 100;
+	// Revalidate any open text documents
+	documents.all().forEach(validateTextDocument);
+});
 
-            const messageEmitter = new MessageEmitter(new StreamMessageReader(socket as NodeJS.ReadableStream), options);
-            const messageWriter = new MessageWriter(new StreamMessageWriter(socket), options);
-            const remoteClient = new RemoteLanguageClient(messageEmitter, messageWriter);
-
-            // Add exit notification handler to close the socket on exit
-            messageEmitter.on("message", message => {
-                if (isNotificationMessage(message) && message.method === "exit") {
-                    socket.end();
-                    socket.destroy();
-                    logger.log(`Connection ${id} closed (exit notification)`);
-                }
-            });
-
-            registerLanguageHandler(messageEmitter, messageWriter, createLangHandler(remoteClient), options);
-        });
-
-        server.listen(options.lspPort, () => {
-            logger.info(`Listening for incoming LSP connections on ${options.lspPort}`);
-        });
-    }
+function validateTextDocument(textDocument: TextDocument): void {
+	let diagnostics: Diagnostic[] = [];
+	let lines = textDocument.getText().split(/\r?\n/g);
+	let problems = 0;
+	for (var i = 0; i < lines.length && problems < maxNumberOfProblems; i++) {
+		let line = lines[i];
+		let index = line.indexOf("typescript");
+		if (index >= 0) {
+			problems++;
+			diagnostics.push({
+				severity: DiagnosticSeverity.Warning,
+				range: {
+					start: { line: i, character: index },
+					end: { line: i, character: index + 10 }
+				},
+				message: `${line.substr(index, 10)} should be spelled TypeScript`,
+				source: 'ex'
+			});
+		}
+	}
+	// Send the computed diagnostics to VSCode.
+	connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
 }
+
+connection.onDidChangeWatchedFiles((_change) => {
+	// Monitored files have change in VSCode
+	connection.console.log('We recevied an file change event');
+});
+
+
+// This handler provides the initial list of the completion items.
+connection.onCompletion((_textDocumentPosition: TextDocumentPositionParams): CompletionItem[] => {
+	// The pass parameter contains the position of the text document in 
+	// which code complete got requested. For the example we ignore this
+	// info and always provide the same completion items.
+	return [
+		{
+			label: 'TypeScript',
+			kind: CompletionItemKind.Text,
+			data: 1
+		},
+		{
+			label: 'JavaScript',
+			kind: CompletionItemKind.Text,
+			data: 2
+		}
+	]
+});
+
+// This handler resolve additional information for the item selected in
+// the completion list.
+connection.onCompletionResolve((item: CompletionItem): CompletionItem => {
+	if (item.data === 1) {
+		item.detail = 'TypeScript details',
+			item.documentation = 'TypeScript documentation'
+	} else if (item.data === 2) {
+		item.detail = 'JavaScript details',
+			item.documentation = 'JavaScript documentation'
+	}
+	return item;
+});
+
+/*
+connection.onDidOpenTextDocument((params) => {
+	// A text document got opened in VSCode.
+	// params.uri uniquely identifies the document. For documents store on disk this is a file URI.
+	// params.text the initial full content of the document.
+	connection.console.log(`${params.textDocument.uri} opened.`);
+});
+connection.onDidChangeTextDocument((params) => {
+	// The content of a text document did change in VSCode.
+	// params.uri uniquely identifies the document.
+	// params.contentChanges describe the content changes to the document.
+	connection.console.log(`${params.textDocument.uri} changed: ${JSON.stringify(params.contentChanges)}`);
+});
+connection.onDidCloseTextDocument((params) => {
+	// A text document got closed in VSCode.
+	// params.uri uniquely identifies the document.
+	connection.console.log(`${params.textDocument.uri} closed.`);
+});
+*/
+
+// Listen on the connection
+connection.listen();
