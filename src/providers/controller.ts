@@ -66,8 +66,8 @@ export class RuleController {
    }
 
    public getCustomSnippets():RuleSnippet[] {
-   this.init();
-   return this.snippets;
+      this.init();
+      return this.snippets;
    }
 
    private init() {
