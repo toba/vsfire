@@ -18,7 +18,7 @@
          "match": "\\/\\/.*",
          "name": "comment"
       }, {
-         "match": "\\b(service|match)\\b",
+         "match": "\\b(service|match|exists|get)\\b",
          "name": "support.function"
       }, {
          "match": "\\b(allow|if)\\b",
@@ -28,9 +28,9 @@
          "name": "storage.modifier"
       }, {
          "match": "(=|!|>|<|\\||&)",
-         "name": "keyword.control"
+         "name": "keyword.operator"
       }, {
-         "match": "\\b(true|false)\\b",
+         "match": "\\b(true|false|null)\\b",
          "name": "constant.language"
       }, {
          "comment": "Match variable",
@@ -38,6 +38,39 @@
          "captures": {
             "1": { "name": "variable.parameter" }
          }
+      },{
+         "comment": "request time object",
+         "match": "\\b(request)\\.(time)\\.(date|year|month|day|time|hours|minutes|seconds|nanos|dayOfWeek|dayOfYear|toMillis)\\(",
+         "captures": {
+            "1": { "name": "support.type" },
+            "2": { "name": "support.variable" },
+            "3": { "name": "support.function.builtin" }
+         }
+      }, {
+         "comment": "request object",
+         "match": "\\b(request)\\.(auth|path|resource|time)\\b",
+         "captures": {
+            "1": { "name": "support.type" },
+            "2": { "name": "support.type" }
+         }
+      }, {
+         "comment": "math object",
+         "match": "\\b(math)\\.(ceil|floor|round|abs|isInfinite|isNaN)\\(",
+         "captures": {
+            "1": { "name": "support.type" },
+            "2": { "name": "support.function.builtin" }
+         }
+      }, {
+         "comment": "document object",
+         "match": "\\b(document)\\.(size|matches)\\(",
+         "captures": {
+            "1": { "name": "support.type" },
+            "2": { "name": "entity.name.function" }
+         }
+      }, {
+         "comment": "bare objects",
+         "match": "\\b(request|math|document|user|duration)\\b",
+         "name": "support.type"
       }
    ]
  }
