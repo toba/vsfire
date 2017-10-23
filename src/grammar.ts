@@ -5,7 +5,7 @@ interface MemberInfo {
 
 interface TypeInfo extends MemberInfo {
    methods?:{[key:string]:MethodInfo};
-   fields?:{[key:string]:TypeInfo};   
+   fields?:{[key:string]:TypeInfo};
    typeName?:string;
 }
 
@@ -92,12 +92,11 @@ export const grammar:{[key:string]:TypeInfo} = {
                      }
                   }
                }
-               
             }
          }
       }
    }
-}
+};
 
 /**
  * Find type information having given name
@@ -107,17 +106,16 @@ export function find(name:string):TypeInfo {
    return findChild(grammar, name);
 }
 
-function findChild(t:TypeInfo, name:string):TypeInfo {
-   if (t.fields) {
-      const match = Reflect.ownKeys(t.fields).find(key => key == name);
-      if (match) { return t.fields[match]; }
-      Reflect.ownKeys(t.fields).forEach(key => {
-         
-      });
+function findChild(fields:{[key:string]:TypeInfo}, name:string):TypeInfo {
+   if (fields) {
+      const match = Reflect.ownKeys(fields).find(key => key == name);
+      if (match) { return fields[match]; }
+      // Reflect.ownKeys(t.fields).forEach(key => {
 
-   } else {
-      return null;
+      // });
+
    }
+   return null;
 }
 
 export default grammar;
