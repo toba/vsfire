@@ -18,10 +18,17 @@
          "match": "\\/\\/.*",
          "name": "comment"
       }, {
+         "comment": "Function parameters",
+         "match": "\\b(function)\\s+\\w+\\((\\w+)\\)",
+         "captures": {
+            "1": { "name": "keyword.control" },
+            "2": { "name": "variable.parameter" }            
+         }
+      }, {
          "match": "\\b(service|match|exists|get|duration)\\b",
          "name": "support.function"
       }, {
-         "match": "\\b(allow|if)\\b",
+         "match": "\\b(allow|if|return)\\b",
          "name": "keyword.control"
       }, {
          "match": "\\b(read|write)\\b",
@@ -38,8 +45,8 @@
          "captures": {
             "1": { "name": "variable.parameter" }
          }
-      },{
-         "comment": "request time object",
+      }, {
+         "comment": "Request time object",
          "match": "\\b(request)\\.(time)\\.(date|year|month|day|time|hours|minutes|seconds|nanos|dayOfWeek|dayOfYear|toMillis)\\(",
          "captures": {
             "1": { "name": "support.type" },
@@ -47,7 +54,7 @@
             "3": { "name": "support.function.builtin" }
          }
       }, {
-         "comment": "request object",
+         "comment": "Request object",
          "match": "\\b(request)\\.(auth|path|resource|time)\\b",
          "captures": {
             "1": { "name": "support.type" },
