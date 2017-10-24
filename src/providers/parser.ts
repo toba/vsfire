@@ -1,6 +1,9 @@
 import { CompletionItem, CompletionItemKind } from "vscode";
 import { find, MemberInfo } from "../grammar";
 
+/**
+ * Build `CompletionItem`s from `TypeInfo` and `MethodInfo` lists.
+ */
 export async function completions(name:string):Promise<CompletionItem[]> {
    const info = await find(name);
    if (info && info.fields || info.methods) {
