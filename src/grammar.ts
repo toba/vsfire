@@ -1,5 +1,3 @@
-import { CompletionItem, CompletionItemKind } from "vscode";
-
 interface MemberInfo {
    about?:string;
    aliases?:string[];
@@ -108,23 +106,6 @@ export function find(name:string):TypeInfo {
    return findChild(grammar, name);
 }
 
-export function suggestions(name:string):CompletionItem[] {
-   const info = find(name);
-   if (info && info.fields || info.methods) {
-      const items:CompletionItem[] = [];
-
-      Reflect.ownKeys(info.fields).forEach(key => {
-         const f = info.fields[key];
-         const item = new CompletionItem(key as string, CompletionItemKind.Field);
-
-         item.detail = f.about;
-
-         items.push(item);
-      });
-      return items;
-   }
-   return null;
-}
 
 /**
  * Find member of TypeInfo map having given name.

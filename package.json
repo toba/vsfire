@@ -28,7 +28,8 @@
       "compile": "tsc -p ./",
       "watch": "tsc -watch -p ./",
       "pkgvars": "node ./node_modules/vscode/bin/install",
-      "postinstall": "node ./node_modules/vscode/bin/install"
+      "postinstall": "node ./node_modules/vscode/bin/install",
+      "test": "node ./node_modules/vscode/bin/test"
    },
    "activationEvents": [
       "onLanguage:firerules"
@@ -66,7 +67,7 @@
       "tslint": "^5.8.0",
       "tslint-consistent-codestyle": "^1.8.0",
       "typescript": "^2.5.3",
-      "vsce": "^1.31.1"
+      "vsce": "^1.31.1" 
    },
    "dependencies": {
       "vscode": "^1.1.6"

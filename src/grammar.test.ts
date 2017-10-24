@@ -3,6 +3,9 @@ import "mocha";
 import { expect } from "chai";
 import { find } from "./grammar";
 
+// Modules that import `vscode` cannot be tested with mocha. At least I can't
+// figure it out. See
+// https://github.com/Microsoft/vscode-wordcount/issues/5
 describe("Grammar", () => {
    it("finds named TypeInfo", () => {
       ["math", "document"].forEach(name => {

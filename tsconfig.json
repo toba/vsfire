@@ -5,7 +5,7 @@
        "outDir": "./out",
        "lib": ["es6"],
        "sourceMap": true,
-       "rootDir": ".",
+       "rootDir": "src",
        "noImplicitAny": true,
        "noImplicitThis": true,
        "alwaysStrict": true,
@@ -15,8 +15,7 @@
        "newLine": "LF",
        "noUnusedParameters": true,
        "allowSyntheticDefaultImports": false,
-       "typeRoots": ["./node_modules/@types"],
-       "baseUrl": "."
+       "typeRoots": ["./node_modules/@types"]
    },
    "exclude": ["node_modules"]
 }
