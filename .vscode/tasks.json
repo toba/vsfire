@@ -20,23 +20,29 @@
          "problemMatcher": []
       },
       {
-         "taskName": "Test",
+         "taskName": "Unit Test",
          "options": {
             "env": {
-               "NODE_PATH": "${cwd}/src",
                "TS_NODE_PROJECT": "${cwd}"
             }
          },
-         "command": "node_modules/.bin/mocha --require ts-node/register ./**/*.test.ts",
+         "command": "node_modules/.bin/mocha --require ts-node/register ./src/**/*.test.ts",
          "type": "shell",
+         "group": "test",
+         "problemMatcher": [
+            "$tsc"
+         ]
+      }, {
+         "taskName": "Integration Test (slow)",
+         "command": "node ./node_modules/vscode/bin/test",
          "group": "test",
          "problemMatcher": [
             "$tsc"
          ]
       },
       {
-         "taskName": "npm",
-         "command": "npm",
+         "taskName": "Build and Watch",
+         "command": "./node_modules/.bin/tsc -watch -p tsconfig.json",
          "type": "shell",
          "presentation": {
             "echo": false,
@@ -44,12 +50,6 @@
             "focus": false,
             "panel": "shared"
          },
-         "args": [
-            "run",
-            "watch",
-            "--loglevel",
-            "silent"
-         ],
          "isBackground": true,
          "problemMatcher": "$tsc-watch"
       },
@@ -65,11 +65,6 @@
          "group": "none",
          "type": "shell",
          "command": "node ./node_modules/vscode/bin/install",
-         "problemMatcher": []
-      },
-      {
-         "type": "npm",
-         "script": "pkgvars",
          "problemMatcher": []
       }
    ]

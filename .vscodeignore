@@ -1,4 +1,5 @@
 .vscode
+.vscode-test
 images
 examples
 node_modules
