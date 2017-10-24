@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { find } from "../grammar";
+//åimport { find } from "../grammar";
 
 export class RuleCompletionProvider implements vscode.CompletionItemProvider {
    public provideCompletionItems(

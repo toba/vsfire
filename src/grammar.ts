@@ -1,4 +1,4 @@
-import * as vscode from "vscode";
+//import { CompletionItem, CompletionItemKind } from "vscode";
 
 interface MemberInfo {
    about?:string;
@@ -16,7 +16,7 @@ interface MethodInfo extends MemberInfo {
    returns?:TypeInfo;
 }
 
-export const grammar:{[key:string]:TypeInfo} = {
+const grammar:{[key:string]:TypeInfo} = {
    "math": {
       methods: {
          "ceil": {
@@ -101,29 +101,34 @@ export const grammar:{[key:string]:TypeInfo} = {
 };
 
 /**
- * Find type information having given name
+ * Find type information having given name.
  */
 export function find(name:string):TypeInfo {
    if (name == null || name == "") { return null; }
    return findChild(grammar, name);
 }
 
-export function suggestions(name:string):vscode.CompletionItem[] {
-   const info = find(name);
-   if (info && info.fields || info.methods) {
-      const items:vscode.CompletionItem[] = [];
-      
-      info.fields.forEach(f => {
-         items.push(new vscode.CompletionItem("", ""));
-      });
+// export function suggestions(name:string):CompletionItem[] {
+//    const info = find(name);
+//    if (info && info.fields || info.methods) {
+//       const items:CompletionItem[] = [];
 
+//       Reflect.ownKeys(info.fields).forEach(key => {
+//          const f = info.fields[key];
+//          const item = new CompletionItem(key as string, CompletionItemKind.Field);
 
-      return items;
+//          item.detail = f.about;
 
-   }
-   return null;
-}
+//          items.push(item);
+//       });
+//       return items;
+//    }
+//    return null;
+// }
 
+/**
+ * Find member of TypeInfo map having given name.
+ */
 function findChild(fields:{[key:string]:TypeInfo}, name:string):TypeInfo {
    let info:TypeInfo = null;
 
@@ -141,5 +146,3 @@ function findChild(fields:{[key:string]:TypeInfo}, name:string):TypeInfo {
    }
    return info;
 }
-
-export default grammar;

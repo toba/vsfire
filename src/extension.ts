@@ -1,13 +1,11 @@
-import * as vscode from "vscode";
+import { ExtensionContext, languages } from "vscode";
 import { RuleCompletionProvider } from "./providers/completion";
-
-//const selector:vscode.DocumentFilter = { language: "firerules", scheme: "file" };
 
 /**
  * Compare https://github.com/andersea/HTMLClassSuggestionsVSCode/blob/master/src/extension.ts
  */
-export function activate(context:vscode.ExtensionContext) {
+export function activate(context:ExtensionContext) {
    context.subscriptions.push(
-      vscode.languages.registerCompletionItemProvider("firerules", new RuleCompletionProvider(), ".")
+      languages.registerCompletionItemProvider("firerules", new RuleCompletionProvider(), ".")
    );
 }

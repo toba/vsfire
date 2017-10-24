@@ -21,12 +21,12 @@
       },
       {
          "taskName": "Test",
-         "options": {
+         "options": { 
             "env": {
-               "TS_NODE_COMPILER_OPTIONS": "{\"module\": \"commonjs\", \"target\": \"es5\"}"
+               "TS_NODE_COMPILER_OPTIONS": "{\"module\": \"commonjs\", \"target\": \"es6\"}"
             }
          },
-         "command": "node_modules/.bin/mocha --compilers ts:ts-node/register,tsx:ts-node/register --require ts-node/register --require ignore-styles --require tsconfig-paths/register ./**/*.test.ts*",
+         "command": "node_modules/.bin/mocha --require ts-node/register ./src/**/*.test.ts",
          "type": "shell",
          "group": "test",
          "problemMatcher": [
