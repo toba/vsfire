@@ -8,7 +8,9 @@ export class RuleCompletionProvider implements vscode.CompletionItemProvider {
       _token:vscode.CancellationToken):Thenable<vscode.CompletionItem[]> {
 
       const lineText = document.lineAt(position.line).text;
-      const start = lineText.lastIndexOf(" ", position.character - 1);
+      const lastSpace = lineText.lastIndexOf(" ", position.character - 1);
+      const lastParen = lineText.lastIndexOf("(", position.character - 1);
+      const start = (lastParen >= lastSpace) ? lastParen : lastSpace;
       const word = lineText.substring(start + 1, position.character).replace(/\.$/, "");
 
       return (word == null) ? null : completions(word);
