@@ -18,7 +18,7 @@
          "match": "\\/\\/.*",
          "name": "comment"
       }, {
-         "match": "\\b(service|match|exists|get)\\b",
+         "match": "\\b(service|match|exists|get|duration)\\b",
          "name": "support.function"
       }, {
          "match": "\\b(allow|if)\\b",
@@ -30,7 +30,7 @@
          "match": "(=|!|>|<|\\||&)",
          "name": "keyword.operator"
       }, {
-         "match": "\\b(true|false|null)\\b",
+         "match": "\\b(true|false|null|in)\\b",
          "name": "constant.language"
       }, {
          "comment": "Match variable",

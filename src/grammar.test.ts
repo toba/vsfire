@@ -3,19 +3,16 @@ import "mocha";
 import { expect } from "chai";
 import { find } from "./grammar";
 
-// Modules that import `vscode` cannot be tested with mocha. At least I can't
-// figure it out. See
-// https://github.com/Microsoft/vscode-wordcount/issues/5
 describe("Grammar", () => {
    it("finds named TypeInfo", () => {
-      ["math", "document"].forEach(async (name) => {
+      ["math", "document"].forEach(async (name)=> {
          const info = await find(name);
          expect(info).to.exist;
          expect(info).has.property("methods");
       });
    });
 
-   it("supports full and relative type paths", async () => {
+   it("supports full and relative type paths", async ()=> {
       const t1 = await find("token");
       const t2 = await find("request.auth.token");
 
@@ -25,5 +22,13 @@ describe("Grammar", () => {
 
       expect(t2).to.exist;
       expect(t1).equals(t2);
+   });
+
+   it("applies basic type members to implementations", async ()=> {
+      const info = await find("request.time");
+
+      expect(info).to.exist;
+      expect(info).has.property("methods");
+      expect(info.methods["year"]).has.property("about", "The year value as an int, from 1 to 9999.");
    });
 });
