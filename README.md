@@ -3,13 +3,14 @@
 [![Installs](https://vsmarketplacebadge.apphb.com/installs/toba.vsfire.svg)](https://marketplace.visualstudio.com/items?itemName=toba.vsfire)
 [![David](https://david-dm.org/toba/vsfire.svg)](https://david-dm.org/toba/vsfire)
 
-# Firestore Rules
-Basic highlighting for new [Firestore security rules](https://cloud.google.com/firestore/docs/reference/security/). Priority for [additional language features](https://code.visualstudio.com/docs/extensionAPI/language-support), in decreasing order of likelihood that I'll get to it:
+# Firestore Security Rules
+Syntax highlighting and code completions for new [Firestore security rules](https://cloud.google.com/firestore/docs/reference/security/). Priority for [additional language features](https://code.visualstudio.com/docs/extensionAPI/language-support), in decreasing order of likelihood that I'll get to it:
 
-- Completions (underway in a branch) then update syntax highlighting
+- Completions for path captures and `allow` rules
+- Corrections for a few syntax scenarios like multiple custom function parameters
 - Hovers
 - Snippets
 - Signature Helpers
 - Incremental Formatting
 
-![Basic example](./screenshots/basic.png)
+![Basic example](./screenshots/completion.gif)

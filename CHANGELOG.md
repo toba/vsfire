@@ -1,6 +1,6 @@
 # 1.1.0
-- Add language service for syntax suggestions and completion.
-- Improve syntax highlighting.
+- Add completions for basic types and global objects.
+- Add syntax highlighting for custom functions.
 - Update logo (still meh).
 
 # 1.0.1
