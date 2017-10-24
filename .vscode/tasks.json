@@ -23,10 +23,11 @@
          "taskName": "Test",
          "options": {
             "env": {
-               "TS_NODE_COMPILER_OPTIONS": "{\"module\": \"commonjs\", \"target\": \"es6\"}"
+               "TS_NODE_PROJECT": "${cwd}"
+               //"TS_NODE_COMPILER_OPTIONS": "{\"module\": \"commonjs\", \"target\": \"es6\"}"
             }
          },
-         "command": "node_modules/.bin/mocha --require ts-node/register ./src/**/*.test.ts",
+         "command": "node_modules/.bin/mocha --require ts-node/register ./**/*.test.ts",
          "type": "shell",
          "group": "test",
          "problemMatcher": [
