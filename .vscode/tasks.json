@@ -21,7 +21,7 @@
       },
       {
          "taskName": "Test",
-         "options": { 
+         "options": {
             "env": {
                "TS_NODE_COMPILER_OPTIONS": "{\"module\": \"commonjs\", \"target\": \"es6\"}"
             }
@@ -43,7 +43,12 @@
             "focus": false,
             "panel": "shared"
          },
-         "args": ["run", "watch", "--loglevel", "silent"],
+         "args": [
+            "run",
+            "watch",
+            "--loglevel",
+            "silent"
+         ],
          "isBackground": true,
          "problemMatcher": "$tsc-watch"
       },
@@ -53,6 +58,13 @@
          "command": "./node_modules/.bin/tsc -p tsconfig.json",
          "type": "shell",
          "problemMatcher": "$tsc"
+      },
+      {
+         "taskName": "Install VSCode Typings",
+         "group": "none",
+         "type": "shell",
+         "command": "node ./node_modules/vscode/bin/install",
+         "problemMatcher": []
       }
    ]
 }
