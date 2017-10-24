@@ -8,15 +8,22 @@ import { find } from "./grammar";
 // https://github.com/Microsoft/vscode-wordcount/issues/5
 describe("Grammar", () => {
    it("finds named TypeInfo", () => {
-      ["math", "document"].forEach(name => {
-         const info = find(name);
+      ["math", "document"].forEach(async (name) => {
+         const info = await find(name);
          expect(info).to.exist;
          expect(info).has.property("methods");
       });
+   });
 
-      const info = find("token");
-      expect(info).to.exist;
-      expect(info).has.property("fields");
-      expect(info.fields).has.property("phone_number");
+   it("supports full and relative type paths", async () => {
+      const t1 = await find("token");
+      const t2 = await find("request.auth.token");
+
+      expect(t1).to.exist;
+      expect(t1).has.property("fields");
+      expect(t1.fields).has.property("phone_number");
+
+      expect(t2).to.exist;
+      expect(t1).equals(t2);
    });
 });

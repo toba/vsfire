@@ -1,4 +1,4 @@
-interface MemberInfo {
+export interface MemberInfo {
    about?:string;
    aliases?:string[];
 }
@@ -83,7 +83,7 @@ const grammar:{[key:string]:TypeInfo} = {
                      "firebase": {
                         fields: {
                            "identities": {
-                              about: "Dictionary of all the identities that are associated with this user's account. The keys of the dictionary can be any of the following: email, phone, google.com, facebook.com, github.com, twitter.com. The values of the dictionary are arrays of unique identifiers for each identity provider associated with the account. For example, auth.token.firebase.identities[\"google.com\"][0] contains the first Google user ID associated with the account."  
+                              about: "Dictionary of all the identities that are associated with this user's account. The keys of the dictionary can be any of the following: email, phone, google.com, facebook.com, github.com, twitter.com. The values of the dictionary are arrays of unique identifiers for each identity provider associated with the account. For example, auth.token.firebase.identities[\"google.com\"][0] contains the first Google user ID associated with the account."
                            },
                            "sign_in_provider": {
                               about: "The sign-in provider used to obtain this token. Can be one of the following strings: custom, password, phone, anonymous, google.com, facebook.com, github.com, twitter.com."
@@ -99,31 +99,53 @@ const grammar:{[key:string]:TypeInfo} = {
 };
 
 /**
- * Find type information having given name.
+ * `TypeInfo` mapped to both absolute and short names. For example, `token` is
+ * keyed to both "token" and "request.auth.token".
  */
-export function find(name:string):TypeInfo {
+const cache:{[key:string]:TypeInfo} = {};
+const listeners:{():void}[] = [];
+let compiled = false;
+let compiling = false;
+
+/**
+ * Find type information with given short or fully-qualified name.
+ */
+export async function find(name:string):Promise<TypeInfo> {
    if (name == null || name == "") { return null; }
-   return findChild(grammar, name);
+   await compile();
+   return (cache[name] !== undefined) ? cache[name] : null;
 }
 
 
 /**
- * Find member of TypeInfo map having given name.
+ * Compile heirarchical grammar into flat map for faster lookup.
  */
-function findChild(fields:{[key:string]:TypeInfo}, name:string):TypeInfo {
-   let info:TypeInfo = null;
+export function compile(force = false):Promise<void> {
+   if (force) { compiled = false; }
 
-   if (fields) {
-      const match = Reflect.ownKeys(fields).find(key => key == name);
+   return (compiled)
+      ? Promise.resolve()
+      : new Promise((resolve, _reject) => {
+         listeners.push(resolve);
+         if (!compiling) {
+            compiling = true;
+            compileTypes(grammar);
+         }
+         while (listeners.length > 0) {
+            listeners.pop()();
+         }
+      });
+}
 
-      if (match) {
-         info = fields[match];
-      } else {
-         Reflect.ownKeys(fields).forEach(key => {
-            info = findChild(fields[key].fields, name);
-            if (info != null) { return; }
-         });
-      }
-   }
-   return info;
+function compileTypes(fields:{[key:string]:TypeInfo}, path:string = ""):void {
+   Reflect.ownKeys(fields).forEach(key => {
+      const info = fields[key];
+      const name = key as string;
+      const full = path + ((path != "") ? "." : "") + name;
+
+      cache[name] = info;
+      cache[full] = info;
+
+      if (info.fields) { compileTypes(info.fields, full); }
+   });
 }

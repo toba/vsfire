@@ -1,26 +1,16 @@
 import * as vscode from "vscode";
-//import { find } from "../grammar";
+import { completions } from "./parser";
 
 export class RuleCompletionProvider implements vscode.CompletionItemProvider {
    public provideCompletionItems(
-      _document:vscode.TextDocument,
-      _position:vscode.Position,
+      document:vscode.TextDocument,
+      position:vscode.Position,
       _token:vscode.CancellationToken):Thenable<vscode.CompletionItem[]> {
 
-      return new Promise<vscode.CompletionItem[]>((resolve, _reject) => {
-         //const completions:vscode.CompletionItem[] = [];
-         // const lineText = document.lineAt(position.line).text;
-         // const text = document.getText();
-         // const wordRange = document.getWordRangeAtPosition(position);
-         // const word = wordRange && document.getText(wordRange);
-         // const item = this.getItem(document, position, lineText, text);
+      const lineText = document.lineAt(position.line).text;
+      const start = lineText.lastIndexOf(" ");
+      const word = lineText.substring(start + 1, position.character).replace(/\.$/, "");
 
-         const item = new vscode.CompletionItem("test", vscode.CompletionItemKind.Field);
-         // console.log("document", document);
-         // console.log("position", position);
-         // console.log("token", token);
-
-         resolve([item]);
-      });
+      return (word == null) ? null : completions(word);
    }
 }
