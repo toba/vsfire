@@ -1,4 +1,3 @@
-///<reference path="../node_modules/vscode/vscode.d.ts"/>
 import { ExtensionContext, languages } from "vscode";
 import { RuleCompletionProvider } from "./providers/completion";
 

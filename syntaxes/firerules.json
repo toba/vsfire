@@ -18,21 +18,26 @@
          "match": "\\/\\/.*",
          "name": "comment"
       }, {
-         "comment": "Function parameters",
-         "match": "\\b(function)\\s+\\w+\\((\\w+)\\)",
+         "comment": "Function",
+         "match": "[\\.\\s\\(]([a-zA-Z]+)(?=\\()",
          "captures": {
-            "1": { "name": "keyword.control" },
-            "2": { "name": "variable.parameter" }            
+            "1": { "name": "support.function" }
          }
       }, {
-         "match": "\\b(service|match|exists|get|duration)\\b",
-         "name": "support.function"
+         "comment": "Global functions without parentheses",
+         "match": "^\\s*(service|match|allow)(?=\\s)",
+         "captures": {
+            "1": { "name": "support.function" }
+         }
       }, {
-         "match": "\\b(allow|if|return)\\b",
+         "match": "\\b(if|return|is)\\b",
          "name": "keyword.control"
       }, {
-         "match": "\\b(read|write)\\b",
-         "name": "storage.modifier"
+         "comment": "Access control",
+         "match": "\\s(get|list|read|update|delete|write)[,:]",
+         "captures": {
+            "1": { "name": "storage.modifier" }
+         }
       }, {
          "match": "(=|!|>|<|\\||&)",
          "name": "keyword.operator"
@@ -40,47 +45,24 @@
          "match": "\\b(true|false|null|in)\\b",
          "name": "constant.language"
       }, {
-         "comment": "Match variable",
+         "comment": "Any type",
+         "match": "[\\s\\.\\(]([a-zA-Z]+)(?=[\\.\\)])",
+         "captures": {
+            "1": { "name": "support.type" }
+         }
+      }, {
+         "comment": "Path match variable",
          "match": "\\/({[^}]+})[\\s\\/]",
          "captures": {
             "1": { "name": "variable.parameter" }
          }
       }, {
-         "comment": "Request time object",
-         "match": "\\b(request)\\.(time)\\.(date|year|month|day|time|hours|minutes|seconds|nanos|dayOfWeek|dayOfYear|toMillis)\\(",
-         "captures": {
-            "1": { "name": "support.type" },
-            "2": { "name": "support.variable" },
-            "3": { "name": "support.function.builtin" }
-         }
-      }, {
-         "comment": "Request object",
-         "match": "\\b(request)\\.(auth|path|resource|time)\\b",
-         "captures": {
-            "1": { "name": "support.type" },
-            "2": { "name": "support.type" }
-         }
-      }, {
-         "comment": "math object",
-         "match": "\\b(math)\\.(ceil|floor|round|abs|isInfinite|isNaN)\\(",
-         "captures": {
-            "1": { "name": "support.type" },
-            "2": { "name": "support.function.builtin" }
-         }
-      }, {
-         "comment": "document object",
-         "match": "\\b(document)\\.(size|matches)\\(",
-         "captures": {
-            "1": { "name": "support.type" },
-            "2": { "name": "entity.name.function" }
-         }
-      }, {
-         "comment": "bare objects",
-         "match": "\\b(request|math|document|user|duration)\\b",
+         "comment": "Basic types",
+         "match": "\\b(request|math|document|user|duration|string|int|cloud)\\b",
          "name": "support.type"
       }, {
          "comment": "Strings",
-         "match": "[\\\"\\'].*[\\\"\\']",
+         "match": "[\\\"\\'].*?[\\\"\\']",
          "name": "string.quoted"
      }
    ]
