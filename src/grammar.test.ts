@@ -38,5 +38,6 @@ describe("Grammar", () => {
       expect(info).to.exist;
       expect(info).has.property("methods");
       expect(info.methods["split"]).has.property("snippet", "split(${1:regex})$0");
+      expect(info.methods["size"]).has.property("snippet", "size()$0");
    });
 });

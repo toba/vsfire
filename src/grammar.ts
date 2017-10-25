@@ -4,7 +4,9 @@
  */
 const cache:{[key:string]:TypeInfo} = {};
 const listeners:{():void}[] = [];
+/** Whether grammar has been compiled to simple cache map. */
 let compiled = false;
+/** Whether grammar is currently being compiled. */
 let compiling = false;
 
 export interface MemberInfo {
@@ -41,7 +43,9 @@ export async function find(name:string):Promise<TypeInfo> {
 }
 
 /**
- * Compile heirarchical grammar into flat map for faster lookup.
+ * Compile heirarchical grammar into flat map for faster lookup. If already
+ * compiled then promise resolves immediately. Otherwise the resolver is added
+ * to any prior resolvers (listeners) awaiting compilation.
  */
 export function compile(force = false):Promise<void> {
    if (force) { compiled = false; }
@@ -104,7 +108,9 @@ function compileBasicMethods(fields:{[key:string]:TypeInfo}):void {
 }
 
 /**
- * Generate snippets for methods that define their parameters.
+ * Generate snippets for methods that define their parameters. Methods that have
+ * an empty parameter array will get a parameterless method call snippet like
+ * `method()`.
  * https://code.visualstudio.com/docs/editor/userdefinedsnippets
  */
 function compileMethods(methods:{[key:string]:MethodInfo}):void {
@@ -112,16 +118,14 @@ function compileMethods(methods:{[key:string]:MethodInfo}):void {
       const info = methods[key];
 
       if (info.parameters) {
-         if (info.parameters.length == 0) {
-            // auto-complete with bare method call
-            info.snippet = null;
-         } else {
-            const args = info.parameters.reduce((snippet, p, i) => {
+         let args = "";
+         if (info.parameters.length > 0) {
+            args = info.parameters.reduce((snippet, p, i) => {
                if (i > 0) { snippet += ", "; }
                return snippet + `\${${i + 1}:${p}}`;
             }, "");
-            info.snippet = `${key}(${args})$0`;
          }
+         info.snippet = `${key}(${args})$0`;
       }
    });
 }
