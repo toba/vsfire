@@ -1,5 +1,5 @@
 src/**/*
-screenshots/**/*
+images/**/*
 .vscode/**/*
 .vscode-test/**/*
 tsconfig.json
