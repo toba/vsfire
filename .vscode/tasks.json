@@ -4,9 +4,11 @@
       {
          "taskName": "Publish",
          "command": "./node_modules/.bin/vsce",
+         "dependsOn": "Build",
          "args": [
             "publish"
          ],
+         "type": "shell",
          "group": "none",
          "problemMatcher": []
       },
@@ -16,6 +18,7 @@
          "args": [
             "package"
          ],
+         "type": "shell",
          "group": "none",
          "problemMatcher": []
       },
