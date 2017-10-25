@@ -1,6 +1,11 @@
 # 1.1.1
-- Add string syntax highlighting.
-- Fix highlighting for multiple function parameters.
+- [#2](https://github.com/toba/vsfire/issues/2)
+   Add string syntax highlighting.
+- [#1](https://github.com/toba/vsfire/issues/1)
+   Fix highlighting for multiple function parameters.
+- [#6](https://github.com/toba/vsfire/issues/6)
+   Fix highlighting for various built-in types and methods.
+- Still iterating on logo.
 
 # 1.1.0
 - Add completions for basic types and global objects.
