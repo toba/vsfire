@@ -24,9 +24,6 @@
       "Languages"
    ],
    "scripts": {
-      "vscode:prepublish": "npm run compile",
-      "compile": "tsc -p ./",
-      "watch": "tsc -watch -p ./",
       "pkgvars": "node ./node_modules/vscode/bin/install",
       "postinstall": "node ./node_modules/vscode/bin/install",
       "test": "node ./node_modules/vscode/bin/test"

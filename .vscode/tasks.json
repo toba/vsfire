@@ -3,22 +3,20 @@
    "tasks": [
       {
          "taskName": "Publish",
-         "command": "./node_modules/.bin/vsce",
+         "command": "vsce",
          "dependsOn": "Build",
          "args": [
             "publish"
          ],
-         "type": "shell",
          "group": "none",
          "problemMatcher": []
       },
       {
          "taskName": "Package",
-         "command": "./node_modules/.bin/vsce",
+         "command": "vsce",
          "args": [
             "package"
          ],
-         "type": "shell",
          "group": "none",
          "problemMatcher": []
       },
