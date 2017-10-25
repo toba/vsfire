@@ -6,7 +6,7 @@
       "rule",
       "rules"
    ],
-   "firstLineMatch": "^service cloud.firestore",
+   "firstLineMatch": "^service\\scloud\\.firestore\\s{",
    "foldingStartMarker": "^\\{\\s*$",
    "foldingStopMarker": "^\\s*\\}",
    "name": "Firebase Rules",
@@ -18,10 +18,44 @@
          "match": "\\/\\/.*",
          "name": "comment"
       }, {
-         "comment": "Function",
+         "comment": "Basic types",
+         "match": "\\b(request|math|user|duration|string|int|cloud)\\b",
+         "name": "support.type"
+      }, {
+         "comment": "Strings",
+         "match": "[\\\"\\'].*?[\\\"\\']",
+         "name": "string.quoted"
+      }, {
+         "comment": "Function name",
          "match": "[\\.\\s\\(]([a-zA-Z]+)(?=\\()",
          "captures": {
             "1": { "name": "support.function" }
+         }
+      }, {
+         "comment": "Function parameters",
+         "begin": "\\(",
+         "end": "\\)",
+         "patterns": [
+            {
+               "match": "\\b(?<![\\'\\\"])[a-zA-Z0-9_]+(?![\\'\\\"])\\b",
+               "name": "variable.parameter"
+            },
+            {
+               "match": "[\\\"\\'].*?[\\\"\\']",
+               "name": "string.quoted"
+            }
+         ]
+      }, {
+         "comment": "Path match literal",
+         "match": "\\/([a-zA-Z0-9_]+)(?=[\\s\\/])",
+         "captures": {
+            "1": { "name": "string.unquoted" }
+         }
+      }, {
+         "comment": "Path match variable",
+         "match": "\\/({[^}]+})(?=[\\s\\/])",
+         "captures": {
+            "1": { "name": "variable.parameter" }
          }
       }, {
          "comment": "Global functions without parentheses",
@@ -42,28 +76,14 @@
          "match": "(=|!|>|<|\\||&)",
          "name": "keyword.operator"
       }, {
-         "match": "\\b(true|false|null|in)\\b",
+         "match": "\\b(true|false|null|in|function)\\b",
          "name": "constant.language"
       }, {
-         "comment": "Any type",
-         "match": "[\\s\\.\\(]([a-zA-Z]+)(?=[\\.\\)])",
-         "captures": {
-            "1": { "name": "support.type" }
-         }
-      }, {
-         "comment": "Path match variable",
-         "match": "\\/({[^}]+})[\\s\\/]",
+         "comment": "Type member",
+         "match": "\\.([a-zA-Z0-9_]+)",
          "captures": {
             "1": { "name": "variable.parameter" }
          }
-      }, {
-         "comment": "Basic types",
-         "match": "\\b(request|math|document|user|duration|string|int|cloud)\\b",
-         "name": "support.type"
-      }, {
-         "comment": "Strings",
-         "match": "[\\\"\\'].*?[\\\"\\']",
-         "name": "string.quoted"
-     }
+      }
    ]
  }
