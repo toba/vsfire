@@ -13,4 +13,4 @@ Syntax highlighting and code completions for new [Firestore security rules](http
 - Signature Helpers
 - Incremental Formatting
 
-![Basic example](./screenshots/completion.gif)
+![Basic example](./images/completion.gif)
