@@ -1,33 +1,48 @@
-import { CompletionItem, CompletionItemKind } from "vscode";
-import { find, MemberInfo } from "../grammar";
+import { CompletionItem, CompletionItemKind, SnippetString } from "vscode";
+import { find, MethodInfo, TypeInfo } from "../grammar";
+
+const cache:{[key:string]:CompletionItem[]} = {};
 
 /**
  * Build `CompletionItem`s from `TypeInfo` and `MethodInfo` lists.
  */
 export async function completions(name:string):Promise<CompletionItem[]> {
+   if (cache[name]) { return Promise.resolve(cache[name]); }
+
    const info = await find(name);
-   if (info && info.fields || info.methods) {
-      const items = [
-         ...makeCompletions(info.fields, CompletionItemKind.Field),
-         ...makeCompletions(info.methods, CompletionItemKind.Method)
-      ];
-      return items.length > 0 ? items : null;
+   let items:CompletionItem[] = null;
+
+   if (info) {
+      items = [];
+      if (info.fields) { addFields(items, info.fields); }
+      if (info.methods) { addMethods(items, info.methods); }
+      if (items.length == 0) { items = null; }
    }
-   return null;
+   cache[name] = items;
+   return items;
 }
 
-function makeCompletions(members:{[key:string]:MemberInfo}, kind:CompletionItemKind) {
-   const items:CompletionItem[] = [];
+function addFields(items:CompletionItem[], fields:{[key:string]:TypeInfo}) {
+   Reflect.ownKeys(fields).forEach(key => {
+      const name = key as string;
+      const f = fields[name];
+      const c = new CompletionItem(name, CompletionItemKind.Field);
 
-   if (members == undefined) { return items; }
-
-   Reflect.ownKeys(members).forEach(key => {
-      const m = members[key];
-      const item = new CompletionItem(key as string, kind);
-
-      item.detail = m.about;
-      items.push(item);
+      c.documentation = f.about;
+      items.push(c);
    });
+}
 
-   return items;
+function addMethods(items:CompletionItem[], methods:{[key:string]:MethodInfo}) {
+   Reflect.ownKeys(methods).forEach(key => {
+      const name = key as string;
+      const m = methods[name];
+      const c = new CompletionItem(name, CompletionItemKind.Method);
+
+      c.documentation = m.about;
+      if (m.snippet) {
+         c.insertText = new SnippetString(m.snippet);
+      }
+      items.push(c);
+   });
 }

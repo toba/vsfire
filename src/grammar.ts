@@ -1,16 +1,129 @@
+/**
+ * `TypeInfo` mapped to both absolute and short names. For example, `token` is
+ * keyed to both "token" and "request.auth.token".
+ */
+const cache:{[key:string]:TypeInfo} = {};
+const listeners:{():void}[] = [];
+let compiled = false;
+let compiling = false;
+
 export interface MemberInfo {
    about:string;
 }
 
-interface TypeInfo extends MemberInfo {
+export interface TypeInfo extends MemberInfo {
    methods?:{[key:string]:MethodInfo};
    fields?:{[key:string]:TypeInfo};
+   /**
+    * Assigning a `basicType` will attach that types fields and methods to this
+    * type.
+    */
    basicType?:string;
 }
 
-interface MethodInfo extends MemberInfo {
+export interface MethodInfo extends MemberInfo {
    parameters?:string[];
    returns?:string;
+   /**
+    * Snippets are generated during compile if `parameters` have been defined.
+    * https://code.visualstudio.com/docs/editor/userdefinedsnippets
+    */
+   snippet?:string;
+}
+
+/**
+ * Find type information with given short or fully-qualified name.
+ */
+export async function find(name:string):Promise<TypeInfo> {
+   if (name == null || name == "") { return null; }
+   await compile();
+   return (cache[name] !== undefined) ? cache[name] : null;
+}
+
+/**
+ * Compile heirarchical grammar into flat map for faster lookup.
+ */
+export function compile(force = false):Promise<void> {
+   if (force) { compiled = false; }
+
+   return (compiled)
+      ? Promise.resolve()
+      : new Promise((resolve, _reject) => {
+         listeners.push(resolve);
+         if (!compiling) {
+            compiling = true;
+            compileBasicMethods(basicTypes);
+            compileTypes(grammar);
+         }
+         while (listeners.length > 0) {
+            listeners.pop()();
+         }
+      });
+}
+
+/**
+ * Assign basic type members to implementing types. For example, assign `string`
+ * methods to `request.path`.
+ */
+function compileTypes(fields:{[key:string]:TypeInfo}, path:string = ""):void {
+   Reflect.ownKeys(fields).forEach(key => {
+      const info = fields[key];
+      const name = key as string;
+      const full = path + ((path != "") ? "." : "") + name;
+
+      if (info.basicType) {
+         // copy members from basic type
+         const basic = basicTypes[info.basicType];
+         if (basic) {
+            info.methods = basic.methods;
+            info.fields = basic.fields;
+         }
+      } else if (info.methods) {
+         compileMethods(info.methods);
+      }
+
+      // cache with both simple and fully-qualified name
+      cache[name] = info;
+      cache[full] = info;
+
+      if (info.fields) { compileTypes(info.fields, full); }
+   });
+}
+
+/**
+ * Generate snippets for basic type methods so they don't have to be generated
+ * again when assigned to an implementing type.
+ */
+function compileBasicMethods(fields:{[key:string]:TypeInfo}):void {
+   Reflect.ownKeys(fields).forEach(key => {
+      const info = fields[key];
+      if (info.methods) { compileMethods(info.methods); }
+      // recurse if basic type has children
+      if (info.fields) { compileBasicMethods(info.fields); }
+   });
+}
+
+/**
+ * Generate snippets for methods that define their parameters.
+ * https://code.visualstudio.com/docs/editor/userdefinedsnippets
+ */
+function compileMethods(methods:{[key:string]:MethodInfo}):void {
+   Reflect.ownKeys(methods).forEach(key => {
+      const info = methods[key];
+
+      if (info.parameters) {
+         if (info.parameters.length == 0) {
+            // auto-complete with bare method call
+            info.snippet = null;
+         } else {
+            const args = info.parameters.reduce((snippet, p, i) => {
+               if (i > 0) { snippet += ", "; }
+               return snippet + `\${${i + 1}:${p}}`;
+            }, "");
+            info.snippet = `${key}(${args})$0`;
+         }
+      }
+   });
 }
 
 /**
@@ -22,14 +135,17 @@ const basicTypes:{[key:string]:TypeInfo} = {
       about: "Strings can be lexographically compared and ordered using the ==, !=, >, <, >=, and <= operators.",
       methods: {
          "size": {
-            about: "Returns the number of characters in the string."
+            about: "Returns the number of characters in the string.",
+            parameters: []
          },
          "matches": {
-            about: "Performs a regular expression match, returns true if the string matches the given regular expression. Uses Google RE2 syntax."
+            about: "Performs a regular expression match, returns true if the string matches the given regular expression. Uses Google RE2 syntax.",
+            parameters: ["regex"]
          },
          "split": {
             about: "Splits a string according to a provided regular expression and returns a list of strings. Uses Google RE2 syntax.",
-            returns: "list"
+            returns: "list",
+            parameters: ["regex"]
          }
       }
    },
@@ -37,41 +153,53 @@ const basicTypes:{[key:string]:TypeInfo} = {
       about: "Timestamps are in UTC, with possible values beginning at 0001-01-01T00.00.00Z and ending at 9999-12-31T23.59.59Z.",
       methods: {
          "date": {
-            about: "A timestamp value containing the year, month, and day only."
+            about: "A timestamp value containing the year, month, and day only.",
+            parameters: []
          },
          "year": {
-            about: "The year value as an int, from 1 to 9999."
+            about: "The year value as an int, from 1 to 9999.",
+            parameters: []
          },
          "month": {
-            about: "The month value as an int, from 1 to 12."
+            about: "The month value as an int, from 1 to 12.",
+            parameters: []
          },
          "day": {
-            about: "The current day of the month as an int, from 1 to 31."
+            about: "The current day of the month as an int, from 1 to 31.",
+            parameters: []
          },
          "time": {
             about: "A `duration` value containing the current time.",
-            returns: "duration"
+            returns: "duration",
+            parameters: []
          },
          "hours": {
-            about: "The hours value as an int, from 0 to 23."
+            about: "The hours value as an int, from 0 to 23.",
+            parameters: []
          },
          "minutes": {
-            about: "The minutes value as an int, from 0 to 59."
+            about: "The minutes value as an int, from 0 to 59.",
+            parameters: []
          },
          "seconds": {
-            about: "The seconds value as an int, from 0 to 59."
+            about: "The seconds value as an int, from 0 to 59.",
+            parameters: []
          },
          "nanos": {
-            about: "The fractional seconds in nanos as an int."
+            about: "The fractional seconds in nanos as an int.",
+            parameters: []
          },
          "dayOfWeek": {
-            about: "The day of the week, from 1 (Monday) to 7 (Sunday)."
+            about: "The day of the week, from 1 (Monday) to 7 (Sunday).",
+            parameters: []
          },
          "dayOfYear": {
-            about: "The day of the current year, from 1 to 366."
+            about: "The day of the current year, from 1 to 366.",
+            parameters: []
          },
          "toMillis": {
-            about: "Returns the current number of milliseconds since the Unix epoch."
+            about: "Returns the current number of milliseconds since the Unix epoch.",
+            parameters: []
          }
       }
    },
@@ -79,10 +207,12 @@ const basicTypes:{[key:string]:TypeInfo} = {
       about: "Duration values are represented as seconds plus fractional seconds in nanoseconds.",
       methods: {
          "seconds": {
-            about: "The number of seconds in the current duration. Must be between -315,576,000,000 and +315,576,000,000 inclusive."
+            about: "The number of seconds in the current duration. Must be between -315,576,000,000 and +315,576,000,000 inclusive.",
+            parameters: []
          },
          "nanos": {
-            about: "The number of fractional seconds (in nanoseconds) of the current duration. Must be beween -999,999,999 and +999,999,999 inclusive. For non-zero seconds and non-zero nanonseconds, the signs of both must be in agreement."
+            about: "The number of fractional seconds (in nanoseconds) of the current duration. Must be beween -999,999,999 and +999,999,999 inclusive. For non-zero seconds and non-zero nanonseconds, the signs of both must be in agreement.",
+            parameters: []
          }
       }
    },
@@ -90,19 +220,24 @@ const basicTypes:{[key:string]:TypeInfo} = {
       about: "A list contains an ordered array of values, which can of type: null, bool, int, float, string, path, list, map, timestamp, or duration.",
       methods: {
          "in": {
-            about: "Returns `true` if the desired value is present in the list or `false` if not present."
+            about: "Returns `true` if the desired value is present in the list or `false` if not present.",
+            parameters: ["value"]
          },
          "join": {
-            about: "Combines a list of strings into a single string, separated by the given string."
+            about: "Combines a list of strings into a single string, separated by the given string.",
+            parameters: []
          },
          "size": {
-            about: "The number of items in the list."
+            about: "The number of items in the list.",
+            parameters: []
          },
          "hasAny": {
-            about: "Returns `true` if any given values are present in the list."
+            about: "Returns `true` if any given values are present in the list.",
+            parameters: ["list"]
          },
          "hasAll": {
-            about: "Returns `true` if all values are present in the list."
+            about: "Returns `true` if all values are present in the list.",
+            parameters: ["list"]
          }
       }
    },
@@ -110,18 +245,22 @@ const basicTypes:{[key:string]:TypeInfo} = {
       about: "A map contains key/value pairs, where keys are strings and values can be any of: null, bool, int, float, string, path, list, map, timestamp, or duration.",
       methods: {
          "in": {
-            about: "Returns true if the desired key is present in the map or false if not present."
+            about: "Returns true if the desired key is present in the map or false if not present.",
+            parameters: ["key"]
          },
          "size": {
-            about: "The number of keys in the map."
+            about: "The number of keys in the map.",
+            parameters: []
          },
          "keys": {
             about: "A list of all keys in the map.",
-            returns: "list"
+            returns: "list",
+            parameters: []
          },
          "values": {
             about: "A list of all values in the map, in key order.",
-            returns: "list"
+            returns: "list",
+            parameters: []
          }
       }
    }
@@ -151,22 +290,28 @@ const grammar:{[key:string]:TypeInfo} = {
       about: "Cloud Firestore Security Rules also provides a number of mathematics helper functions to simplify expressions.",
       methods: {
          "ceil": {
-            about: "Ceiling of the numeric value"
+            about: "Ceiling of the numeric value",
+            parameters: ["number"]
          },
          "floor": {
-            about: "Floor of the numeric value"
+            about: "Floor of the numeric value",
+            parameters: ["number"]
          },
          "round": {
-            about: "Round the input value to the nearest int"
+            about: "Round the input value to the nearest int",
+            parameters: ["number"]
          },
          "abs": {
-            about: "Absolute value of the input"
+            about: "Absolute value of the input",
+            parameters: ["number"]
          },
          "isInfinite": {
-            about: "Test whether the value is ±∞, returns a `bool`"
+            about: "Test whether the value is ±∞, returns a `bool`",
+            parameters: ["number"]
          },
          "isNaN": {
-            about: "Test whether the value is not a number `NaN`, returns a `bool`"
+            about: "Test whether the value is not a number `NaN`, returns a `bool`",
+            parameters: ["number"]
          }
       }
    },
@@ -235,65 +380,3 @@ const grammar:{[key:string]:TypeInfo} = {
       }
    }
 };
-
-/**
- * `TypeInfo` mapped to both absolute and short names. For example, `token` is
- * keyed to both "token" and "request.auth.token".
- */
-const cache:{[key:string]:TypeInfo} = {};
-const listeners:{():void}[] = [];
-let compiled = false;
-let compiling = false;
-
-/**
- * Find type information with given short or fully-qualified name.
- */
-export async function find(name:string):Promise<TypeInfo> {
-   if (name == null || name == "") { return null; }
-   await compile();
-   return (cache[name] !== undefined) ? cache[name] : null;
-}
-
-
-/**
- * Compile heirarchical grammar into flat map for faster lookup.
- */
-export function compile(force = false):Promise<void> {
-   if (force) { compiled = false; }
-
-   return (compiled)
-      ? Promise.resolve()
-      : new Promise((resolve, _reject) => {
-         listeners.push(resolve);
-         if (!compiling) {
-            compiling = true;
-            compileTypes(grammar);
-         }
-         while (listeners.length > 0) {
-            listeners.pop()();
-         }
-      });
-}
-
-
-function compileTypes(fields:{[key:string]:TypeInfo}, path:string = ""):void {
-   Reflect.ownKeys(fields).forEach(key => {
-      const info = fields[key];
-      const name = key as string;
-      const full = path + ((path != "") ? "." : "") + name;
-
-      if (info.basicType) {
-         // copy members from basic type
-         const basic = basicTypes[info.basicType];
-         if (basic) {
-            info.methods = basic.methods;
-            info.fields = basic.fields;
-         }
-      }
-
-      cache[name] = info;
-      cache[full] = info;
-
-      if (info.fields) { compileTypes(info.fields, full); }
-   });
-}

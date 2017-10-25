@@ -33,14 +33,7 @@
          "problemMatcher": [
             "$tsc"
          ]
-      }, {
-         "taskName": "Integration Test (slow)",
-         "command": "node ./node_modules/vscode/bin/test",
-         "group": "test",
-         "problemMatcher": [
-            "$tsc"
-         ]
-      },
+      }, 
       {
          "taskName": "Build and Watch",
          "command": "./node_modules/.bin/tsc -watch -p tsconfig.json",
