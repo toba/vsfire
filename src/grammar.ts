@@ -9,11 +9,23 @@ let compiled = false;
 /** Whether grammar is currently being compiled. */
 let compiling = false;
 
-export interface MemberInfo {
+export interface SymbolInfo {
    about:string;
 }
 
-export interface TypeInfo extends MemberInfo {
+/**
+ * Data request method
+ * https://cloud.google.com/firestore/docs/reference/security/#request_methods
+ */
+export interface AccessInfo extends SymbolInfo {
+   /**
+    * Key list is converted to object reference during compile.
+    */
+   includeTypes?:string[];
+   includes?:AccessInfo[];
+}
+
+export interface TypeInfo extends SymbolInfo {
    methods?:{[key:string]:MethodInfo};
    fields?:{[key:string]:TypeInfo};
    /**
@@ -23,7 +35,7 @@ export interface TypeInfo extends MemberInfo {
    basicType?:string;
 }
 
-export interface MethodInfo extends MemberInfo {
+export interface MethodInfo extends SymbolInfo {
    parameters?:string[];
    returns?:string;
    /**
@@ -43,6 +55,15 @@ export async function find(name:string):Promise<TypeInfo> {
 }
 
 /**
+ * Get named access information.
+ */
+export async function accessType(name:string):Promise<AccessInfo> {
+   if (name == null || name == "") { return null; }
+   await compile();
+   return accessTypes[name];
+}
+
+/**
  * Compile heirarchical grammar into flat map for faster lookup. If already
  * compiled then promise resolves immediately. Otherwise the resolver is added
  * to any prior resolvers (listeners) awaiting compilation.
@@ -58,6 +79,9 @@ export function compile(force = false):Promise<void> {
             compiling = true;
             compileBasicMethods(basicTypes);
             compileTypes(grammar);
+            compileAccessTypes(accessTypes);
+            compiled = true;
+            compiling = false;
          }
          while (listeners.length > 0) {
             listeners.pop()();
@@ -129,6 +153,47 @@ function compileMethods(methods:{[key:string]:MethodInfo}):void {
       }
    });
 }
+
+function compileAccessTypes(access:{[key:string]:AccessInfo}):void {
+   Reflect.ownKeys(access).forEach(key => {
+      const info = access[key];
+
+      if (info.includeTypes) {
+         info.includes = info.includeTypes.map(i => access[i]);
+         //info.snippet = `${key}(${args})$0`;
+      }
+   });
+}
+
+/**
+ * Permitted request methods
+ * https://cloud.google.com/firestore/docs/reference/security/#request_methods
+ */
+const accessTypes:{[key:string]:AccessInfo} = {
+   "read": {
+      about: "Allow both `get` and `list` operations",
+      includeTypes: ["get", "list"]
+   },
+   "get": {
+      about: "Corresponds to `get()` query method"
+   },
+   "list": {
+      about: "Corresponds to `where().get()` query method"
+   },
+   "write": {
+      about: "Allows `create`, `update` and `delete` operations",
+      includeTypes: ["create", "update", "delete"]
+   },
+   "create": {
+      about: "Corresponds to `set()` and `add()` query methods"
+   },
+   "update": {
+      about: "Corresponds to `update()` query method"
+   },
+   "delete": {
+      about: "Corresponds to `remove()` query method"
+   }
+};
 
 /**
  * Basic type members are assigned by reference to the symbols implementing

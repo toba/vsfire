@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-expression */
 import "mocha";
 import { expect } from "chai";
-import { find } from "./grammar";
+import { find, accessType } from "./grammar";
 
 describe("Grammar", () => {
    it("finds named TypeInfo", () => {
@@ -39,5 +39,13 @@ describe("Grammar", () => {
       expect(info).has.property("methods");
       expect(info.methods["split"]).has.property("snippet", "split(${1:regex})$0");
       expect(info.methods["size"]).has.property("snippet", "size()$0");
+   });
+
+   it("builds list of request access methods", async ()=> {
+      const info = await accessType("read");
+
+      expect(info).to.exist;
+      expect(info).has.property("includes");
+      expect(info.includes).is.length(2);
    });
 });

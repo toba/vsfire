@@ -6,6 +6,6 @@ import { RuleCompletionProvider } from "./providers/completion";
  */
 export function activate(context:ExtensionContext) {
    context.subscriptions.push(
-      languages.registerCompletionItemProvider("firerules", new RuleCompletionProvider(), ".")
+      languages.registerCompletionItemProvider("firerules", new RuleCompletionProvider(), ".", " ")
    );
 }
