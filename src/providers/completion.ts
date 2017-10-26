@@ -44,7 +44,7 @@ async function directives(name:string):Promise<CompletionItem[]> {
       const allows = await accessModifiers();
       items = allows.map(a => {
          const i = new CompletionItem(a.name, CompletionItemKind.Keyword);
-         i.documentation = a.about;
+         i.documentation = sanitize(a.about);
          return i;
       });
    }
