@@ -1,3 +1,7 @@
+/**
+ * Consider formal symbolizing like
+ * https://github.com/Krzysztof-Cieslak/vscode-elm/blob/master/src/elmWorkspaceSymbols.ts
+ */
 import { Position, TextDocument } from "vscode";
 
 /** Match last word in text preceded by space or open paren/bracket. */
