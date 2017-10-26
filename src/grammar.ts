@@ -2,16 +2,27 @@
  * `TypeInfo` mapped to both fully-quallified and short names. For example,
  * `token` is keyed to both "token" and "request.auth.token".
  */
-const cache:{[key:string]:TypeInfo} = {};
+const typeCache:{[key:string]:TypeInfo} = {};
+
+/**
+ * `MethodInfo` mapped to short names.
+ */
+const methodCache:{[key:string]:MethodInfo} = {};
+
 const listeners:{():void}[] = [];
+
 /** Whether grammar has been compiled to simple cache map. */
 let compiled = false;
 /**
- * Whether grammar is currently being compiled. Not quite sure yet if this check
- * is needed, if VSCode might make concurrent calls.
+ * Whether grammar is currently being compiled. Not sure yet if this check is
+ * needed, if VSCode makes concurrent calls.
  */
 let compiling = false;
 
+/**
+ * Basic information about a symbol, whether type, method, directive or access
+ * modifier.
+ */
 export interface SymbolInfo {
    about:string;
 }
@@ -50,16 +61,35 @@ export interface MethodInfo extends SymbolInfo {
 /**
  * Find type information with given short or fully-qualified name.
  */
-export async function find(name:string):Promise<TypeInfo> {
+export async function findType(name:string):Promise<TypeInfo> {
    if (name == null || name == "") { return null; }
    await compile();
-   return (cache[name] !== undefined) ? cache[name] : null;
+   return (typeCache[name] !== undefined) ? typeCache[name] : null;
 }
 
 /**
- * Get named access information.
+ * Find any named symbol whether a type, method or access modifier.
  */
-export async function allowances():Promise<AllowInfo[]> {
+export async function findAny(name:string):Promise<SymbolInfo> {
+   if (name == null || name == "") { return null; }
+   await compile();
+
+   const allow = allowTypes.find(a => a.name == name);
+   if (allow !== undefined) { return allow; }
+
+   const info = typeCache[name];
+   if (info !== undefined) { return info; }
+
+   const method = methodCache[name];
+   if (method !== undefined) { return method; }
+
+   return null;
+}
+
+/**
+ * Get named access modifiers.
+ */
+export async function accessModifiers():Promise<AllowInfo[]> {
    await compile();
    return allowTypes;
 }
@@ -81,6 +111,7 @@ export function compile(force = false):Promise<void> {
             compileBasicMethods(basicTypes);
             compileTypes(grammar);
             compileAllowTypes(allowTypes);
+            resolveMethodCollisions();
             compiled = true;
             compiling = false;
          }
@@ -112,8 +143,8 @@ function compileTypes(fields:{[key:string]:TypeInfo}, path:string = ""):void {
       }
 
       // cache with both simple and fully-qualified name
-      cache[name] = info;
-      cache[full] = info;
+      typeCache[name] = info;
+      typeCache[full] = info;
 
       if (info.fields) { compileTypes(info.fields, full); }
    });
@@ -153,6 +184,8 @@ function compileMethods(methods:{[key:string]:MethodInfo}):void {
          }
          info.snippet = `${key}(${args})$0`;
       }
+
+      methodCache[key] = info;
    });
 }
 
@@ -163,6 +196,25 @@ function compileAllowTypes(access:AllowInfo[]):void {
          //info.snippet = `${key}(${args})$0`;
       }
    });
+}
+
+/**
+ * Looking up methods by name results in a collision between some types.
+ */
+function resolveMethodCollisions():void {
+   const s = methodCache["string"];
+   const i = methodCache["in"];
+
+   if (s) {
+      s.about = `- **string**: number of characters
+- **list**: number of items
+- **map**: number of keys`;
+   }
+
+   if (i) {
+      i.about = `- **list**: whether the value is present in the list
+- **map**: whether the value matches a key in the map`;
+   }
 }
 
 /**

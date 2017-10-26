@@ -5,7 +5,7 @@ import {
    ProviderResult,
    Position,
    TextDocument } from "vscode";
-import { find } from "../grammar";
+import { findAny } from "../grammar";
 import { currentWord } from "../parse";
 
 const cache:{[key:string]:Hover} = {};
@@ -28,7 +28,7 @@ export default class RuleHoverProvider implements HoverProvider {
 async function members(name:string):Promise<Hover> {
    if (cache[name]) { return Promise.resolve(cache[name]); }
 
-   const info = await find(name);
+   const info = await findAny(name);
    let h:Hover = null;
 
    if (info) {

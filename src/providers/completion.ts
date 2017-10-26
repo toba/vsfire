@@ -7,8 +7,8 @@ import {
    SnippetString,
    TextDocument } from "vscode";
 import {
-   find,
-   allowances,
+   findType,
+   accessModifiers,
    MethodInfo,
    TypeInfo } from "../grammar";
 import { priorWord } from "../parse";
@@ -41,7 +41,7 @@ async function directives(name:string):Promise<CompletionItem[]> {
    let items:CompletionItem[] = null;
 
    if (name == "allow") {
-      const allows = await allowances();
+      const allows = await accessModifiers();
       items = allows.map(a => {
          const i = new CompletionItem(a.name, CompletionItemKind.Keyword);
          i.documentation = a.about;
@@ -59,7 +59,7 @@ async function directives(name:string):Promise<CompletionItem[]> {
 async function members(name:string):Promise<CompletionItem[]> {
    if (cache[name]) { return Promise.resolve(cache[name]); }
 
-   const info = await find(name);
+   const info = await findType(name);
    let items:CompletionItem[] = null;
 
    if (info) {

@@ -1,20 +1,20 @@
 /* tslint:disable:no-unused-expression */
 import "mocha";
 import { expect } from "chai";
-import { find, allowances } from "./grammar";
+import { findType, accessModifiers } from "./grammar";
 
 describe("Grammar", () => {
    it("finds named TypeInfo", () => {
       ["math", "document"].forEach(async (name)=> {
-         const info = await find(name);
+         const info = await findType(name);
          expect(info).to.exist;
          expect(info).has.property("methods");
       });
    });
 
    it("supports full and relative type paths", async ()=> {
-      const t1 = await find("token");
-      const t2 = await find("request.auth.token");
+      const t1 = await findType("token");
+      const t2 = await findType("request.auth.token");
 
       expect(t1).to.exist;
       expect(t1).has.property("fields");
@@ -25,7 +25,7 @@ describe("Grammar", () => {
    });
 
    it("applies basic type members to implementations", async ()=> {
-      const info = await find("request.time");
+      const info = await findType("request.time");
 
       expect(info).to.exist;
       expect(info).has.property("methods");
@@ -33,7 +33,7 @@ describe("Grammar", () => {
    });
 
    it("generates snippets for parameterized methods", async ()=> {
-      const info = await find("request.path");
+      const info = await findType("request.path");
 
       expect(info).to.exist;
       expect(info).has.property("methods");
@@ -42,7 +42,7 @@ describe("Grammar", () => {
    });
 
    it("builds list of request access methods", async ()=> {
-      const methods = await allowances();
+      const methods = await accessModifiers();
 
       expect(methods).to.exist;
       expect(methods).is.length(7);

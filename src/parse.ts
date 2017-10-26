@@ -16,6 +16,7 @@ export function priorWord(doc:TextDocument, pos:Position):string {
 /**
  * Get the word at the current position.
  */
-export function currentWord(_doc:TextDocument, _pos:Position):string {
-   return "request";
+export function currentWord(doc:TextDocument, pos:Position):string {
+   const range = doc.getWordRangeAtPosition(pos);
+   return (range.isEmpty) ? null : doc.getText(range);
 }
