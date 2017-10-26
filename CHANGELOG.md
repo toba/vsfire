@@ -1,3 +1,11 @@
+# 1.2.0
+- [#4](https://github.com/toba/vsfire/issues/4)
+   Initial hover support.
+- [#3](https://github.com/toba/vsfire/issues/3)
+   Completions for `server`, `match` and `allow` directives.
+- [#5](https://github.com/toba/vsfire/issues/5)
+   Fix symbol descriptions wrapping mid-word.
+
 # 1.1.1
 - [#2](https://github.com/toba/vsfire/issues/2)
    Add string syntax highlighting.

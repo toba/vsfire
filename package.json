@@ -2,7 +2,7 @@
    "name": "vsfire",
    "displayName": "Firebase",
    "description": "Firestore Security Rules syntax highlighting",
-   "version": "1.1.1",
+   "version": "1.2.0",
    "publisher": "toba",
    "keywords": [
       "firebase",

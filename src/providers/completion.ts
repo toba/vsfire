@@ -78,7 +78,7 @@ function addFields(items:CompletionItem[], fields:{[key:string]:TypeInfo}) {
       const f = fields[name];
       const c = new CompletionItem(name, CompletionItemKind.Field);
 
-      c.documentation = f.about;
+      c.documentation = sanitize(f.about);
       items.push(c);
    });
 }
@@ -89,10 +89,15 @@ function addMethods(items:CompletionItem[], methods:{[key:string]:MethodInfo}) {
       const m = methods[name];
       const c = new CompletionItem(name, CompletionItemKind.Method);
 
-      c.documentation = m.about;
+      c.documentation = sanitize(m.about);
       if (m.snippet) {
          c.insertText = new SnippetString(m.snippet);
       }
       items.push(c);
    });
 }
+
+/**
+ * Completions don't appear to support markdown.
+ */
+const sanitize = (text:string) => text.replace(/[`\*]/g, "");

@@ -111,7 +111,6 @@ export function compile(force = false):Promise<void> {
             compileBasicMethods(basicTypes);
             compileTypes(grammar);
             compileAllowTypes(allowTypes);
-            resolveMethodCollisions();
             compiled = true;
             compiling = false;
          }
@@ -185,7 +184,18 @@ function compileMethods(methods:{[key:string]:MethodInfo}):void {
          info.snippet = `${key}(${args})$0`;
       }
 
-      methodCache[key] = info;
+      if (methodCache[key] !== undefined) {
+         // If the same method name is used by multiple types then clone to
+         // break the shared reference and combine their descriptions.
+         const existing = Object.assign({}, methodCache[key]);
+         if (!existing.about.startsWith("- ")) {
+            existing.about = "- " + existing.about;
+         }
+         existing.about += "\n- " + info.about;
+         methodCache[key] = existing;
+      } else {
+         methodCache[key] = info;
+      }
    });
 }
 
@@ -199,32 +209,13 @@ function compileAllowTypes(access:AllowInfo[]):void {
 }
 
 /**
- * Looking up methods by name results in a collision between some types.
- */
-function resolveMethodCollisions():void {
-   const s = methodCache["string"];
-   const i = methodCache["in"];
-
-   if (s) {
-      s.about = `- **string**: number of characters
-- **list**: number of items
-- **map**: number of keys`;
-   }
-
-   if (i) {
-      i.about = `- **list**: whether the value is present in the list
-- **map**: whether the value matches a key in the map`;
-   }
-}
-
-/**
  * Permitted request methods
  * https://cloud.google.com/firestore/docs/reference/security/#request_methods
  */
 const allowTypes:AllowInfo[] = [
    {
       name: "read",
-      about: "Allow both `get` and `list` operations",
+      about: "Allow `get` and `list` operations",
       includeTypes: ["get", "list"]
    },
    {
@@ -260,14 +251,14 @@ const allowTypes:AllowInfo[] = [
  */
 const basicTypes:{[key:string]:TypeInfo} = {
    "string": {
-      about: "Strings can be lexographically compared and ordered using the ==, !=, >, <, >=, and <= operators.",
+      about: "Strings can be lexographically compared and ordered using the `==`, `!=`, `>`, `<`, `>=`, and `<=` operators.",
       methods: {
          "size": {
             about: "Returns the number of characters in the string.",
             parameters: []
          },
          "matches": {
-            about: "Performs a regular expression match, returns true if the string matches the given regular expression. Uses Google RE2 syntax.",
+            about: "Performs a regular expression match, returns `true` if the string matches the given regular expression. Uses Google RE2 syntax.",
             parameters: ["regex"]
          },
          "split": {
@@ -285,15 +276,15 @@ const basicTypes:{[key:string]:TypeInfo} = {
             parameters: []
          },
          "year": {
-            about: "The year value as an int, from 1 to 9999.",
+            about: "The year value as an `int`, from 1 to 9999.",
             parameters: []
          },
          "month": {
-            about: "The month value as an int, from 1 to 12.",
+            about: "The month value as an `int`, from 1 to 12.",
             parameters: []
          },
          "day": {
-            about: "The current day of the month as an int, from 1 to 31.",
+            about: "The current day of the month as an `int`, from 1 to 31.",
             parameters: []
          },
          "time": {
@@ -302,11 +293,11 @@ const basicTypes:{[key:string]:TypeInfo} = {
             parameters: []
          },
          "hours": {
-            about: "The hours value as an int, from 0 to 23.",
+            about: "The hours value as an `int`, from 0 to 23.",
             parameters: []
          },
          "minutes": {
-            about: "The minutes value as an int, from 0 to 59.",
+            about: "The minutes value as an `int`, from 0 to 59.",
             parameters: []
          },
          "seconds": {
@@ -314,7 +305,7 @@ const basicTypes:{[key:string]:TypeInfo} = {
             parameters: []
          },
          "nanos": {
-            about: "The fractional seconds in nanos as an int.",
+            about: "The fractional seconds in nanos as an `int`.",
             parameters: []
          },
          "dayOfWeek": {
@@ -345,7 +336,7 @@ const basicTypes:{[key:string]:TypeInfo} = {
       }
    },
    "list": {
-      about: "A list contains an ordered array of values, which can of type: null, bool, int, float, string, path, list, map, timestamp, or duration.",
+      about: "A list contains an ordered array of values, which can of type: `null`, `bool`, `int`, `float`, `string`, `path`, `list`, `map`, `timestamp`, or `duration`.",
       methods: {
          "in": {
             about: "Returns `true` if the desired value is present in the list or `false` if not present.",
@@ -370,7 +361,7 @@ const basicTypes:{[key:string]:TypeInfo} = {
       }
    },
    "map": {
-      about: "A map contains key/value pairs, where keys are strings and values can be any of: null, bool, int, float, string, path, list, map, timestamp, or duration.",
+      about: "A map contains key/value pairs, where keys are strings and values can be any of: `null`, `bool`, `int`, `float`, `string`, `path`, `list`, `map`, `timestamp`, or `duration`.",
       methods: {
          "in": {
             about: "Returns true if the desired key is present in the map or false if not present.",
@@ -392,7 +383,6 @@ const basicTypes:{[key:string]:TypeInfo} = {
          }
       }
    }
-
 };
 
 /**
@@ -426,7 +416,7 @@ const grammar:{[key:string]:TypeInfo} = {
             parameters: ["number"]
          },
          "round": {
-            about: "Round the input value to the nearest int",
+            about: "Round the input value to the nearest `int`",
             parameters: ["number"]
          },
          "abs": {
@@ -464,7 +454,7 @@ const grammar:{[key:string]:TypeInfo} = {
             basicType: "timestamp"
          },
          "auth": {
-            about: "When an authenticated user performs a request against Cloud Firestore, the auth variable is populated with the user's uid (request.auth.uid) as well as the claims of the Firebase Authentication JWT (request.auth.token).",
+            about: "When an authenticated user performs a request against Cloud Firestore, the auth variable is populated with the user's uid (`request.auth.uid`) as well as the claims of the Firebase Authentication JWT (`request.auth.token`).",
             fields: {
                "token": {
                   about: "Firebase Authentication JWT",
