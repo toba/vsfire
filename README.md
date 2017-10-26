@@ -4,11 +4,11 @@
 [![David](https://david-dm.org/toba/vsfire.svg)](https://david-dm.org/toba/vsfire)
 
 # Firestore Security Rules
-Syntax highlighting and code completions for new [Firestore security rules](https://cloud.google.com/firestore/docs/reference/security/). Priority for [additional language features](https://code.visualstudio.com/docs/extensionAPI/language-support) ordered by the likelihood I'll get to them:
+Syntax highlighting, code completions and hover help for new [Firestore security rules](https://cloud.google.com/firestore/docs/reference/security/). Priority for [additional language features](https://code.visualstudio.com/docs/extensionAPI/language-support) ordered by the likelihood I'll get to them:
 
 - [x] Syntax Highlighting
 - [x] Code Completions
-- [ ] Hover Definitions
+- [x] Hover Definitions
 - [ ] Snippets
 - [ ] Signature Helpers
 - [ ] Incremental Formatting

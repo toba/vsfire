@@ -1,11 +1,11 @@
 import { ExtensionContext, languages } from "vscode";
-import { RuleCompletionProvider } from "./providers/completion";
+import RuleCompletionProvider from "./providers/completion";
+import RuleHoverProvider from "./providers/hover";
 
-/**
- * Compare https://github.com/andersea/HTMLClassSuggestionsVSCode/blob/master/src/extension.ts
- */
+
 export function activate(context:ExtensionContext) {
    context.subscriptions.push(
-      languages.registerCompletionItemProvider("firerules", new RuleCompletionProvider(), ".", " ")
+      languages.registerCompletionItemProvider("firerules", new RuleCompletionProvider(), ".", " "),
+      languages.registerHoverProvider("firerules", new RuleHoverProvider())
    );
 }
