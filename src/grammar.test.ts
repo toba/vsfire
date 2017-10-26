@@ -29,7 +29,7 @@ describe("Grammar", () => {
 
       expect(info).to.exist;
       expect(info).has.property("methods");
-      expect(info.methods["year"]).has.property("about", "The year value as an int, from 1 to 9999.");
+      expect(info.methods["year"]).has.property("about", "The year value as an `int`, from 1 to 9999.");
    });
 
    it("generates snippets for parameterized methods", async ()=> {
