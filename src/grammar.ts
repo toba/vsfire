@@ -1,12 +1,15 @@
 /**
- * `TypeInfo` mapped to both absolute and short names. For example, `token` is
- * keyed to both "token" and "request.auth.token".
+ * `TypeInfo` mapped to both fully-quallified and short names. For example,
+ * `token` is keyed to both "token" and "request.auth.token".
  */
 const cache:{[key:string]:TypeInfo} = {};
 const listeners:{():void}[] = [];
 /** Whether grammar has been compiled to simple cache map. */
 let compiled = false;
-/** Whether grammar is currently being compiled. */
+/**
+ * Whether grammar is currently being compiled. Not quite sure yet if this check
+ * is needed, if VSCode might make concurrent calls.
+ */
 let compiling = false;
 
 export interface SymbolInfo {
@@ -133,6 +136,7 @@ function compileBasicMethods(fields:{[key:string]:TypeInfo}):void {
  * Generate snippets for methods that define their parameters. Methods that have
  * an empty parameter array will get a parameterless method call snippet like
  * `method()`.
+ *
  * https://code.visualstudio.com/docs/editor/userdefinedsnippets
  */
 function compileMethods(methods:{[key:string]:MethodInfo}):void {

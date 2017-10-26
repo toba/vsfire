@@ -18,6 +18,7 @@ const priorWord = new RegExp("[\\s\\(\\[]([A-Za-z0-9_\\.]+)\\s*$");
 
 /**
  * Provide suggestions for previous word or partial word.
+ * https://code.visualstudio.com/docs/extensionAPI/language-support#_show-code-completion-proposals
  */
 export class RuleCompletionProvider implements CompletionItemProvider {
    public provideCompletionItems(doc:TextDocument, pos:Position, _tok:CancellationToken):Thenable<CompletionItem[]> {
@@ -33,15 +34,18 @@ export class RuleCompletionProvider implements CompletionItemProvider {
 }
 
 /**
- * Get the word adjacent (previous) to the current position. Get the substring
- * of the current line up to the current position then use a compiled regular
- * expression to match the word nearest the end.
+ * Get the word adjacent (previous) to the current position by getting the
+ * substring of the current line up to the current position then use a compiled
+ * regular expression to match the word nearest the end.
  */
 function adjacentWord(doc:TextDocument, pos:Position):string {
    const match = priorWord.exec(doc.lineAt(pos.line).text.substring(0, pos.character));
    return (match && match.length > 1) ? match[1] : null;
 }
 
+/**
+ * Completions for stand-alone directives `service`, `match` and `allow`.
+ */
 async function directives(name:string):Promise<CompletionItem[]> {
    if (cache[name]) { return Promise.resolve(cache[name]); }
 
