@@ -17,12 +17,11 @@ export interface SymbolInfo {
  * Data request method
  * https://cloud.google.com/firestore/docs/reference/security/#request_methods
  */
-export interface AccessInfo extends SymbolInfo {
-   /**
-    * Key list is converted to object reference during compile.
-    */
+export interface AllowInfo extends SymbolInfo {
+   name:string;
+   /** Key list converted to object map during compile. */
    includeTypes?:string[];
-   includes?:AccessInfo[];
+   includes?:AllowInfo[];
 }
 
 export interface TypeInfo extends SymbolInfo {
@@ -57,10 +56,9 @@ export async function find(name:string):Promise<TypeInfo> {
 /**
  * Get named access information.
  */
-export async function accessType(name:string):Promise<AccessInfo> {
-   if (name == null || name == "") { return null; }
+export async function allowances():Promise<AllowInfo[]> {
    await compile();
-   return accessTypes[name];
+   return allowTypes;
 }
 
 /**
@@ -79,7 +77,7 @@ export function compile(force = false):Promise<void> {
             compiling = true;
             compileBasicMethods(basicTypes);
             compileTypes(grammar);
-            compileAccessTypes(accessTypes);
+            compileAllowTypes(allowTypes);
             compiled = true;
             compiling = false;
          }
@@ -154,12 +152,10 @@ function compileMethods(methods:{[key:string]:MethodInfo}):void {
    });
 }
 
-function compileAccessTypes(access:{[key:string]:AccessInfo}):void {
-   Reflect.ownKeys(access).forEach(key => {
-      const info = access[key];
-
+function compileAllowTypes(access:AllowInfo[]):void {
+   access.forEach(info => {
       if (info.includeTypes) {
-         info.includes = info.includeTypes.map(i => access[i]);
+         info.includes = info.includeTypes.map(name => access.find(a => a.name == name));
          //info.snippet = `${key}(${args})$0`;
       }
    });
@@ -169,31 +165,38 @@ function compileAccessTypes(access:{[key:string]:AccessInfo}):void {
  * Permitted request methods
  * https://cloud.google.com/firestore/docs/reference/security/#request_methods
  */
-const accessTypes:{[key:string]:AccessInfo} = {
-   "read": {
+const allowTypes:AllowInfo[] = [
+   {
+      name: "read",
       about: "Allow both `get` and `list` operations",
       includeTypes: ["get", "list"]
    },
-   "get": {
+   {
+      name: "get",
       about: "Corresponds to `get()` query method"
    },
-   "list": {
+   {
+      name: "list",
       about: "Corresponds to `where().get()` query method"
    },
-   "write": {
+   {
+      name: "write",
       about: "Allows `create`, `update` and `delete` operations",
       includeTypes: ["create", "update", "delete"]
    },
-   "create": {
+   {
+      name: "create",
       about: "Corresponds to `set()` and `add()` query methods"
    },
-   "update": {
+   {
+      name: "update",
       about: "Corresponds to `update()` query method"
    },
-   "delete": {
+   {
+      name: "delete",
       about: "Corresponds to `remove()` query method"
    }
-};
+];
 
 /**
  * Basic type members are assigned by reference to the symbols implementing

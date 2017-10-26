@@ -6,7 +6,11 @@ import {
    Position,
    SnippetString,
    TextDocument } from "vscode";
-import { find, MethodInfo, TypeInfo } from "../grammar";
+import {
+   find,
+   allowances,
+   MethodInfo,
+   TypeInfo } from "../grammar";
 
 const cache:{[key:string]:CompletionItem[]} = {};
 /** Match last word in text preceded by space or open paren/bracket. */
@@ -41,13 +45,13 @@ function adjacentWord(doc:TextDocument, pos:Position):string {
 async function directives(name:string):Promise<CompletionItem[]> {
    if (cache[name]) { return Promise.resolve(cache[name]); }
 
-   const access = ["get", "list", "read", "update", "delete", "write"];
    let items:CompletionItem[] = null;
 
-   if (name == "allow" || access.indexOf(name) >= 0) {
-      items = access.map(a => {
-         const i = new CompletionItem(a, CompletionItemKind.Keyword);
-         i.
+   if (name == "allow") {
+      const allows = await allowances();
+      items = allows.map(a => {
+         const i = new CompletionItem(a.name, CompletionItemKind.Keyword);
+         i.documentation = a.about;
          return i;
       });
    }

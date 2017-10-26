@@ -1,7 +1,7 @@
 /* tslint:disable:no-unused-expression */
 import "mocha";
 import { expect } from "chai";
-import { find, accessType } from "./grammar";
+import { find, allowances } from "./grammar";
 
 describe("Grammar", () => {
    it("finds named TypeInfo", () => {
@@ -42,10 +42,9 @@ describe("Grammar", () => {
    });
 
    it("builds list of request access methods", async ()=> {
-      const info = await accessType("read");
+      const methods = await allowances();
 
-      expect(info).to.exist;
-      expect(info).has.property("includes");
-      expect(info.includes).is.length(2);
+      expect(methods).to.exist;
+      expect(methods).is.length(7);
    });
 });
