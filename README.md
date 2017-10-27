@@ -9,6 +9,7 @@ Syntax highlighting, code completions and hover help for new [Firestore security
 - [x] Syntax Highlighting
 - [x] Code Completions
 - [x] Hover Definitions
+- [ ] [JSON Schema](https://code.visualstudio.com/docs/languages/json#_intellisense-validation) for [Index Definitions](https://firebase.google.com/docs/firestore/query-data/indexing)
 - [ ] Snippets
 - [ ] Signature Helpers
 - [ ] Incremental Formatting
