@@ -68,7 +68,7 @@
          "name": "keyword.control"
       }, {
          "comment": "Access control",
-         "match": "\\s(get|list|read|create|update|delete|write)[,:]",
+         "match": "\\s(get|list|read|create|update|delete|write)[,:;]",
          "captures": {
             "1": { "name": "storage.modifier" }
          }
