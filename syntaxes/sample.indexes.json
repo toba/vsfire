@@ -1,0 +1,13 @@
+{
+   "indexes": [
+      {
+         "name": "my index",
+         "collectionId": "widgets",
+         "fields": [
+            { "fieldPath": "foo", "mode": "ASCENDING" },
+            { "fieldPath": "bar", "mode": "DESCENDING" },
+            { "fieldPath": "baz", "mode": "ASCENDING" }
+         ]
+      }
+   ]
+}

@@ -1,3 +1,8 @@
+# 1.3.0
+- Add [JSON Schema](https://code.visualstudio.com/docs/languages/json#_intellisense-validation) for [Index Definitions](https://cloud.google.com/firestore/docs/reference/rest/v1beta1/projects.databases.indexes) (enables completions and hovers).
+- [#8](https://github.com/toba/vsfire/issues/8)
+   Fix access modifier highlighting if last element on line.
+
 # 1.2.0
 - [#4](https://github.com/toba/vsfire/issues/4)
    Initial hover support.

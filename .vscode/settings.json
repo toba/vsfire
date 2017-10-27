@@ -4,5 +4,11 @@
       "**/.git": true,
       "**/.DS_Store": true,
       ".vscode-test": true
-   }
+   },
+   "json.schemas": [
+      {
+          "fileMatch": ["*.indexes.json"],
+          "url": "./syntaxes/index.schema.json"
+      }
+   ]
 }

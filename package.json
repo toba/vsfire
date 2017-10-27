@@ -53,6 +53,12 @@
             "scopeName": "source.firerules",
             "path": "./syntaxes/firerules.json"
          }
+      ],
+      "jsonValidation": [
+         {
+            "fileMatch": "*.indexes.json",
+            "url": "./syntaxes/index.schema.json"
+         }
       ]
    },
    "devDependencies": {
