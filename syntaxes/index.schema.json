@@ -23,7 +23,7 @@
                      "properties": {
                         "fieldPath": {
                            "type": "string",
-                           "pattern": "^[a-zA-Z0-9_\/]+$",
+                           "pattern": "^[a-zA-Z0-9_\/\.]+$",
                            "description": "The path of the field. Special field paths __name__, __type__, and __scatter__ may be used."
                         },
                         "mode": {
