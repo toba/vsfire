@@ -1,78 +1,65 @@
 {
-   "name": "vsfire",
-   "displayName": "Firebase",
-   "description": "Firestore Security Rules syntax highlighting",
-   "version": "1.3.0",
-   "publisher": "toba",
-   "keywords": [
-      "firebase",
-      "firestore",
-      "rules"
-   ],
-   "icon": "logo.png",
-   "repository": {
-      "type": "git",
-      "url": "https://github.com/toba/vsfire.git"
-   },
-   "bugs": {
-      "url": "https://github.com/toba/vsfire/issues"
-   },
-   "engines": {
-      "vscode": "^1.11.0"
-   },
-   "categories": [
-      "Languages"
-   ],
-   "scripts": {
-      "compile": "tsc -p ./",
-      "pkgvars": "node ./node_modules/vscode/bin/install",
-      "postinstall": "node ./node_modules/vscode/bin/install",
-      "test": "node ./node_modules/vscode/bin/test"
-   },
-   "activationEvents": [
-      "onLanguage:firerules"
-   ],
-   "main": "./out/src/extension",
-   "contributes": {
-      "languages": [
-         {
-            "id": "firerules",
-            "extensions": [
-               ".rules",
-               ".rule"
-            ],
-            "aliases": [
-               "Firebase Rules"
-            ],
-            "configuration": "./language-configuration.json"
-         }
-      ],
-      "grammars": [
-         {
-            "language": "firerules",
-            "scopeName": "source.firerules",
-            "path": "./syntaxes/firerules.json"
-         }
-      ],
-      "jsonValidation": [
-         {
-            "fileMatch": "*.indexes.json",
-            "url": "./syntaxes/index.schema.json"
-         }
-      ]
-   },
-   "devDependencies": {
-      "@types/chai": "^4.0.4",
-      "@types/mocha": "^2.2.43",
-      "@types/node": "^8.0.46",
-      "chai": "^4.1.2",
-      "mocha": "^4.0.1",
-      "ts-node": "^3.3.0",
-      "tslint": "^5.8.0",
-      "tslint-consistent-codestyle": "^1.8.0",
-      "typescript": "^2.5.3"
-   },
-   "dependencies": {
-      "vscode": "^1.1.6"
-   }
+  "name": "vsfire",
+  "displayName": "Firebase",
+  "description": "Firestore Security Rules syntax highlighting",
+  "version": "1.3.1",
+  "publisher": "toba",
+  "keywords": ["firebase", "firestore", "rules"],
+  "icon": "logo.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/toba/vsfire.git"
+  },
+  "bugs": {
+    "url": "https://github.com/toba/vsfire/issues"
+  },
+  "engines": {
+    "vscode": "^1.11.0"
+  },
+  "categories": ["Languages"],
+  "scripts": {
+    "compile": "tsc -p ./",
+    "pkgvars": "node ./node_modules/vscode/bin/install",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "node ./node_modules/vscode/bin/test"
+  },
+  "activationEvents": ["onLanguage:firerules"],
+  "main": "./out/src/extension",
+  "contributes": {
+    "languages": [
+      {
+        "id": "firerules",
+        "extensions": [".rules", ".rule"],
+        "aliases": ["Firebase Rules"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "firerules",
+        "scopeName": "source.firerules",
+        "path": "./syntaxes/firerules.json"
+      }
+    ],
+    "jsonValidation": [
+      {
+        "fileMatch": "*.indexes.json",
+        "url": "./syntaxes/index.schema.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@types/chai": "^4.0.4",
+    "@types/mocha": "^2.2.43",
+    "@types/node": "^8.5.0",
+    "chai": "^4.1.2",
+    "mocha": "^4.0.1",
+    "ts-node": "^4.0.0",
+    "tslint": "^5.8.0",
+    "tslint-consistent-codestyle": "^1.8.0",
+    "typescript": "^2.5.3"
+  },
+  "dependencies": {
+    "vscode": "^1.1.6"
+  }
 }

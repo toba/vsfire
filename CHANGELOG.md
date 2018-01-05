@@ -1,3 +1,6 @@
+# 1.3.1
+- Merge PR from [Sam Stern](https://github.com/samtstern) to allow `.` (period) in a field path. Thank you Sam!
+
 # 1.3.0
 - Add [JSON Schema](https://code.visualstudio.com/docs/languages/json#_intellisense-validation) for [Index Definitions](https://cloud.google.com/firestore/docs/reference/rest/v1beta1/projects.databases.indexes) (enables completions and hovers).
 - [#8](https://github.com/toba/vsfire/issues/8)

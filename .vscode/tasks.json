@@ -2,7 +2,7 @@
    "version": "2.0.0",
    "tasks": [
       {
-         "taskName": "Publish",
+         "label": "Publish",
          "command": "vsce",
          "dependsOn": "Build",
          "args": [
@@ -12,7 +12,7 @@
          "problemMatcher": []
       },
       {
-         "taskName": "Package",
+         "label": "Package",
          "command": "vsce",
          "args": [
             "package"
@@ -21,7 +21,7 @@
          "problemMatcher": []
       },
       {
-         "taskName": "Unit Test",
+         "label": "Unit Test",
          "options": {
             "env": {
                "TS_NODE_PROJECT": "${cwd}"
@@ -33,9 +33,9 @@
          "problemMatcher": [
             "$tsc"
          ]
-      }, 
+      },
       {
-         "taskName": "Build and Watch",
+         "label": "Build and Watch",
          "command": "./node_modules/.bin/tsc -watch -p tsconfig.json",
          "type": "shell",
          "presentation": {
@@ -48,14 +48,14 @@
          "problemMatcher": "$tsc-watch"
       },
       {
-         "taskName": "Build",
+         "label": "Build",
          "group": "build",
          "command": "./node_modules/.bin/tsc -p tsconfig.json",
          "type": "shell",
          "problemMatcher": "$tsc"
       },
       {
-         "taskName": "Install VSCode Typings",
+         "label": "Install VSCode Typings",
          "group": "none",
          "type": "shell",
          "command": "node ./node_modules/vscode/bin/install",
