@@ -456,6 +456,10 @@ const grammar:{[key:string]:TypeInfo} = {
          "auth": {
             about: "When an authenticated user performs a request against Cloud Firestore, the auth variable is populated with the user's uid (`request.auth.uid`) as well as the claims of the Firebase Authentication JWT (`request.auth.token`).",
             fields: {
+               "uid": {
+                  about: "The user's Firebase UID. This is unique within a project.",
+                  basicType: "string"
+               },
                "token": {
                   about: "Firebase Authentication JWT",
                   fields: {
