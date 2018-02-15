@@ -1,3 +1,6 @@
+# 1.3.2
+- Merge PR from [Arturo Guzman](https://github.com/guzart) to allow `uid` field in `request.auth`. Thank you Arturo!
+
 # 1.3.1
 - Merge PR from [Sam Stern](https://github.com/samtstern) to allow `.` (period) in a field path. Thank you Sam!
 
