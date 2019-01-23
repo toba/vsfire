@@ -7,14 +7,17 @@
          "items": {
             "type": "object",
             "properties": {
-               "name": {
-                  "type": "string",
-                  "description": "The resource name of the index."
-               },
-               "collectionId": {
+               "collectionGroup": {
                   "type": "string",
                   "pattern": "^[a-zA-Z0-9_]+$",
-                  "description": "The collection ID to which this index applies."
+                  "description": "The collection group ID to which this index applies."
+               },
+               "queryScope": {
+                  "enum": [
+                     "COLLECTION",
+                     "COLLECTION_GROUP"
+                  ],
+                  "description": "The query scope to which this index applies."
                },
                "fields": {
                   "type": "array",
@@ -26,35 +29,80 @@
                            "pattern": "^[a-zA-Z0-9_\/\.]+$",
                            "description": "The path of the field. Special field paths __name__, __type__, and __scatter__ may be used."
                         },
-                        "mode": {
+                        "order": {
                            "enum": [
                               "ASCENDING",
-                              "DESCENDING",
-                              "MODE_UNSPECIFIED"
+                              "DESCENDING"
                            ],
-                           "description": "The mode determines how a field is indexed."
+                           "description": "The order determines how a field is indexed."
+                        },
+                        "arrayConfig": {
+                           "enum": [
+                              "CONTAINS"
+                           ],
+                           "description": "The arrayConfig determines how an array field is indexed."
                         }
                      },
                      "uniqueItems": true,
                      "required": ["fieldPath"]
                   },
                   "minItems": 1
-               },
-               "state": {
-                  "enum": [
-                     "STATE_UNSPECIFIED",
-                     "DISABLED",
-                     "ENABLED",
-                     "ENABLING",
-                     "DISABLING",
-                     "ERROR"
-                  ],
-                  "description": "The state of the index. The state is read-only and is manipulated by using the enable and disable RPCs. During enabling, the process could result in an error, in which case the index will move to the ERROR state. The process can be recovered by either fixing the data that caused the error and retrying by calling enable or by aborting the index build by calling disable."
                }
             },
-            "required": ["collectionId", "fields"]
+            "required": ["collectionGroup", "queryScope", "fields"]
          },
-         "minItems": 1
+         "minItems": 0
+      },
+      "fieldOverrides": {
+         "type": "array",
+         "items": {
+            "type": "object",
+            "properties": {
+               "collectionGroup": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9_]+$",
+                  "description": "The collection group ID to which this field override applies."
+               },
+               "fieldPath": {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9_\/\.]+$",
+                  "description": "The field path to which this field override applies."
+               },
+               "indexes": {
+                  "type": "array",
+                  "items": {
+                     "type": "object",
+                     "properties": {
+                        "queryScope": {
+                           "enum": [
+                              "COLLECTION",
+                              "COLLECTION_GROUP"
+                           ],
+                           "description": "The query scope to which this index applies."
+                        },
+                        "order": {
+                           "enum": [
+                              "ASCENDING",
+                              "DESCENDING"
+                           ],
+                           "description": "The order determines how a field is indexed."
+                        },
+                        "arrayConfig": {
+                           "enum": [
+                              "CONTAINS"
+                           ],
+                           "description": "The arrayConfig determines how an array field is indexed."
+                        }
+                     },
+                     "uniqueItems": true,
+                     "required": ["order", "queryScope"]
+                  },
+                  "minItems": 0
+               }
+            },
+            "required": ["collectionGroup", "queryScope", "fields"]
+         },
+         "minItems": 0
       }
    },
    "required": ["indexes"]
