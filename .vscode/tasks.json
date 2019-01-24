@@ -5,34 +5,28 @@
          "label": "Publish",
          "command": "vsce",
          "dependsOn": "Build",
-         "args": [
-            "publish"
-         ],
+         "args": ["publish"],
          "group": "none",
          "problemMatcher": []
       },
       {
          "label": "Package",
          "command": "vsce",
-         "args": [
-            "package"
-         ],
+         "args": ["package"],
          "group": "none",
          "problemMatcher": []
       },
       {
-         "label": "Unit Test",
-         "options": {
-            "env": {
-               "TS_NODE_PROJECT": "${cwd}"
-            }
+         "label": "Test",
+         "command": "./node_modules/.bin/jest",
+         "presentation": {
+            "showReuseMessage": false,
+            "clear": true
          },
-         "command": "node_modules/.bin/mocha --require ts-node/register ./src/**/*.test.ts",
+         "args": ["--verbose"],
          "type": "shell",
          "group": "test",
-         "problemMatcher": [
-            "$tsc"
-         ]
+         "problemMatcher": []
       },
       {
          "label": "Build and Watch",

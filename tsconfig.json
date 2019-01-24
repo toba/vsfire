@@ -1,21 +1,6 @@
 {
+   "extends": "@toba/develop/tsconfig.dev",
    "compilerOptions": {
-       "module": "commonjs",
-       "target": "es6",
-       "outDir": "./out",
-       "lib": ["es6","dom"],
-       "sourceMap": true,
-       "rootDir": ".",
-       "noImplicitAny": true,
-       "noImplicitThis": true,
-       "alwaysStrict": true,
-       "removeComments": true,
-       "noUnusedLocals": true,
-       "strictNullChecks": false,
-       "newLine": "LF",
-       "noUnusedParameters": true,
-       "allowSyntheticDefaultImports": false,
-       "typeRoots": ["./node_modules/@types"]
-   },
-   "exclude": ["node_modules"]
+      "module": "commonjs"
+   }
 }

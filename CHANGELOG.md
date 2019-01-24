@@ -1,3 +1,6 @@
+# 1.4.0
+- Update dependencies
+
 # 1.3.2
 - Merge PR from [Arturo Guzman](https://github.com/guzart) to allow `uid` field in `request.auth`. Thank you Arturo!
 
