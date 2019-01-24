@@ -1,7 +1,6 @@
 [![Market Badge](https://vsmarketplacebadge.apphb.com/version/toba.vsfire.svg)](https://marketplace.visualstudio.com/items?itemName=toba.vsfire)
 [![Travis](https://travis-ci.org/toba/vsfire.svg?branch=master)](https://travis-ci.org/toba/vsfire#)
 [![Installs](https://vsmarketplacebadge.apphb.com/installs/toba.vsfire.svg)](https://marketplace.visualstudio.com/items?itemName=toba.vsfire)
-[![David](https://david-dm.org/toba/vsfire.svg)](https://david-dm.org/toba/vsfire)
 
 <img src='https://toba.github.io/about/images/logo-colored.svg' width="100" align="right"/>
 
