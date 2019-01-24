@@ -19,18 +19,19 @@
       {
          "label": "Test",
          "command": "./node_modules/.bin/jest",
+         "args": ["--verbose"],
          "presentation": {
             "showReuseMessage": false,
             "clear": true
          },
-         "args": ["--verbose"],
          "type": "shell",
          "group": "test",
          "problemMatcher": []
       },
       {
          "label": "Build and Watch",
-         "command": "./node_modules/.bin/tsc -watch -p tsconfig.json",
+         "command": "./node_modules/.bin/tsc",
+         "args": ["-watch", "-p", "tsconfig.json"],
          "type": "shell",
          "presentation": {
             "echo": false,
@@ -44,7 +45,8 @@
       {
          "label": "Build",
          "group": "build",
-         "command": "./node_modules/.bin/tsc -p tsconfig.json",
+         "command": "./node_modules/.bin/tsc",
+         "args": ["-p", "tsconfig.json"],
          "type": "shell",
          "problemMatcher": "$tsc"
       },
@@ -52,7 +54,16 @@
          "label": "Install VSCode Typings",
          "group": "none",
          "type": "shell",
-         "command": "node ./node_modules/vscode/bin/install",
+         "command": "node",
+         "args": ["./node_modules/vscode/bin/install"],
+         "problemMatcher": []
+      },
+      {
+         "label": "Install Visual Studio Code Extensions",
+         "group": "none",
+         "type": "shell",
+         "command": "yarn",
+         "args": ["global", "add", "vsce"],
          "problemMatcher": []
       }
    ]
