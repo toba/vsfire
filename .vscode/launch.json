@@ -10,7 +10,7 @@
          "stopOnEntry": false,
          "sourceMaps": true,
          "outFiles": ["${workspaceRoot}/dist/**/*.js"],
-         "preLaunchTask": "Build and Watch"
+         "preLaunchTask": "Build"
       },
       {
          "name": "Integration Tests",
