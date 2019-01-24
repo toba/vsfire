@@ -491,7 +491,7 @@ const grammar: { [key: string]: TypeInfo } = {
          },
          resource: {
             about:
-               'The resource variable contains data and metadata about the document being written. It is closely related to the resource variable, which contains the current document at the requested path, as opposed to the document being written.',
+               'The resource variable contains data and metadata about the document being written. It is closely related to the request variable, which contains the current document at the requested path, as opposed to the document being written.',
             fields: {
                data: {
                   about:

@@ -1,12 +1,20 @@
-{
+  {
    "indexes": [
       {
-         "name": "my index",
-         "collectionId": "widgets",
+         "collectionGroup": "widgets",
+         "queryScope": "COLLECTION",
          "fields": [
-            { "fieldPath": "foo", "mode": "ASCENDING" },
-            { "fieldPath": "bar", "mode": "DESCENDING" },
-            { "fieldPath": "baz", "mode": "ASCENDING" }
+            { "fieldPath": "foo", "arrayConfig": "CONTAINS" },
+            { "fieldPath": "bar", "order": "DESCENDING" }
+         ]
+      }
+   ],
+   "fieldOverrides": [
+      {
+         "collectionGroup": "widgets",
+         "fieldPath": "baz",
+         "indexes": [
+            { "order": "ASCENDING", "queryScope": "COLLECTION" }
          ]
       }
    ]
