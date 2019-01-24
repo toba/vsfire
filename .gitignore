@@ -2,3 +2,5 @@
 node_modules
 .vscode-test
 /dist
+/test/**/*.d.ts
+/test/**/*.js

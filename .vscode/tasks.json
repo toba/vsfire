@@ -29,24 +29,18 @@
          "problemMatcher": []
       },
       {
-         "label": "Build and Watch",
-         "command": "./node_modules/.bin/tsc",
-         "args": ["-watch", "-p", "tsconfig.json"],
-         "type": "shell",
-         "presentation": {
-            "echo": false,
-            "reveal": "always",
-            "focus": false,
-            "panel": "shared"
-         },
-         "isBackground": true,
-         "problemMatcher": "$tsc-watch"
-      },
-      {
          "label": "Build",
          "group": "build",
          "command": "./node_modules/.bin/tsc",
          "args": ["-p", "tsconfig.json"],
+         "type": "shell",
+         "problemMatcher": "$tsc"
+      },
+      {
+         "label": "Build Integration Tests",
+         "group": "build",
+         "command": "./node_modules/.bin/tsc",
+         "args": ["-p", "tsconfig.test.json"],
          "type": "shell",
          "problemMatcher": "$tsc"
       },
@@ -59,7 +53,7 @@
          "problemMatcher": []
       },
       {
-         "label": "Install Visual Studio Code Extensions",
+         "label": "Install VSCode Extensions",
          "group": "none",
          "type": "shell",
          "command": "yarn",
