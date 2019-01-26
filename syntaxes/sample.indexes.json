@@ -1,4 +1,4 @@
-  {
+{
    "indexes": [
       {
          "collectionGroup": "widgets",
@@ -13,9 +13,7 @@
       {
          "collectionGroup": "widgets",
          "fieldPath": "baz",
-         "indexes": [
-            { "order": "ASCENDING", "queryScope": "COLLECTION" }
-         ]
+         "indexes": [{ "order": "ASCENDING", "queryScope": "COLLECTION" }]
       }
    ]
 }
