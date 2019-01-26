@@ -1,50 +1,56 @@
-/* tslint:disable:no-unused-expression */
-import "mocha";
-import { expect } from "chai";
-import { findType, accessModifiers } from "./grammar";
+import '@toba/test';
+import { findType, accessModifiers } from './grammar';
 
-describe("Grammar", () => {
-   it("finds named TypeInfo", () => {
-      ["math", "document"].forEach(async (name)=> {
-         const info = await findType(name);
-         expect(info).to.exist;
-         expect(info).has.property("methods");
-      });
+test('finds named TypeInfo', () => {
+   ['math', 'document'].forEach(async name => {
+      const info = await findType(name);
+      expect(info).toBeDefined();
+      expect(info).not.toBeNull();
+      expect(info).toHaveProperty('methods');
    });
+});
 
-   it("supports full and relative type paths", async ()=> {
-      const t1 = await findType("token");
-      const t2 = await findType("request.auth.token");
+test('supports full and relative type paths', async () => {
+   const t1 = await findType('token');
+   const t2 = await findType('request.auth.token');
 
-      expect(t1).to.exist;
-      expect(t1).has.property("fields");
-      expect(t1.fields).has.property("phone_number");
+   expect(t1).toBeDefined();
+   expect(t1).not.toBeNull();
+   expect(t1).toHaveProperty('fields');
+   expect(t1!.fields).toHaveProperty('phone_number');
 
-      expect(t2).to.exist;
-      expect(t1).equals(t2);
-   });
+   expect(t2).toBeDefined();
+   expect(t1).toBe(t2);
+});
 
-   it("applies basic type members to implementations", async ()=> {
-      const info = await findType("request.time");
+test('applies basic type members to implementations', async () => {
+   const info = await findType('request.time');
 
-      expect(info).to.exist;
-      expect(info).has.property("methods");
-      expect(info.methods["year"]).has.property("about", "The year value as an `int`, from 1 to 9999.");
-   });
+   expect(info).toBeDefined();
+   expect(info).not.toBeNull();
+   expect(info).toHaveProperty('methods');
+   expect(info!.methods!['year']).toHaveProperty(
+      'about',
+      'The year value as an `int`, from 1 to 9999.'
+   );
+});
 
-   it("generates snippets for parameterized methods", async ()=> {
-      const info = await findType("request.path");
+test('generates snippets for parameterized methods', async () => {
+   const info = await findType('request.path');
 
-      expect(info).to.exist;
-      expect(info).has.property("methods");
-      expect(info.methods["split"]).has.property("snippet", "split(${1:regex})$0");
-      expect(info.methods["size"]).has.property("snippet", "size()$0");
-   });
+   expect(info).toBeDefined();
+   expect(info).not.toBeNull();
+   expect(info).toHaveProperty('methods');
+   expect(info!.methods!['split']).toHaveProperty(
+      'snippet',
+      'split(${1:regex})$0'
+   );
+   expect(info!.methods!['size']).toHaveProperty('snippet', 'size()$0');
+});
 
-   it("builds list of request access methods", async ()=> {
-      const methods = await accessModifiers();
+test('builds list of request access methods', async () => {
+   const methods = await accessModifiers();
 
-      expect(methods).to.exist;
-      expect(methods).is.length(7);
-   });
+   expect(methods).toBeDefined();
+   expect(methods).toHaveLength(7);
 });

@@ -1,0 +1,9 @@
+{
+   "extends": "@toba/develop/tsconfig.dev",
+   "compilerOptions": {
+      "module": "commonjs",
+      "outDir": ""
+   },
+   "include": ["./test"],
+   "exclude": ["node_modules", "src"]
+}

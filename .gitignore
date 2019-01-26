@@ -1,4 +1,7 @@
 *.vsix
 node_modules
 .vscode-test
-out
+/dist
+/test/**/*.d.ts
+/test/**/*.js
+/src/**/*.js

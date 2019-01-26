@@ -1,3 +1,10 @@
+# 1.4.0
+- Merge PR from [Sam Stern](https://github.com/samtstern) to update the [index specification](https://github.com/firebase/firebase-tools/blob/master/src/firestore/indexes-spec.ts). Thank you Sam!
+- Merge PR from [Konrad Linkowski](https://github.com/KonradLinkowski) to correct grammar note. Thank you Konrad!
+- Update dependencies
+   - Fix tests
+   - Strict null checks
+
 # 1.3.2
 - Merge PR from [Arturo Guzman](https://github.com/guzart) to allow `uid` field in `request.auth`. Thank you Arturo!
 

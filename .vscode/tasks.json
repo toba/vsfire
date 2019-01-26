@@ -5,52 +5,42 @@
          "label": "Publish",
          "command": "vsce",
          "dependsOn": "Build",
-         "args": [
-            "publish"
-         ],
+         "args": ["publish"],
          "group": "none",
          "problemMatcher": []
       },
       {
          "label": "Package",
          "command": "vsce",
-         "args": [
-            "package"
-         ],
+         "args": ["package"],
          "group": "none",
          "problemMatcher": []
       },
       {
-         "label": "Unit Test",
-         "options": {
-            "env": {
-               "TS_NODE_PROJECT": "${cwd}"
-            }
+         "label": "Test",
+         "command": "./node_modules/.bin/jest",
+         "args": ["--verbose"],
+         "presentation": {
+            "showReuseMessage": false,
+            "clear": true
          },
-         "command": "node_modules/.bin/mocha --require ts-node/register ./src/**/*.test.ts",
          "type": "shell",
          "group": "test",
-         "problemMatcher": [
-            "$tsc"
-         ]
-      },
-      {
-         "label": "Build and Watch",
-         "command": "./node_modules/.bin/tsc -watch -p tsconfig.json",
-         "type": "shell",
-         "presentation": {
-            "echo": false,
-            "reveal": "always",
-            "focus": false,
-            "panel": "shared"
-         },
-         "isBackground": true,
-         "problemMatcher": "$tsc-watch"
+         "problemMatcher": []
       },
       {
          "label": "Build",
          "group": "build",
-         "command": "./node_modules/.bin/tsc -p tsconfig.json",
+         "command": "./node_modules/.bin/tsc",
+         "args": ["-p", "tsconfig.json"],
+         "type": "shell",
+         "problemMatcher": "$tsc"
+      },
+      {
+         "label": "Build Integration Tests",
+         "group": "build",
+         "command": "./node_modules/.bin/tsc",
+         "args": ["-p", "tsconfig.test.json"],
          "type": "shell",
          "problemMatcher": "$tsc"
       },
@@ -58,7 +48,16 @@
          "label": "Install VSCode Typings",
          "group": "none",
          "type": "shell",
-         "command": "node ./node_modules/vscode/bin/install",
+         "command": "node",
+         "args": ["./node_modules/vscode/bin/install"],
+         "problemMatcher": []
+      },
+      {
+         "label": "Install VSCode Extensions",
+         "group": "none",
+         "type": "shell",
+         "command": "yarn",
+         "args": ["global", "add", "vsce"],
          "problemMatcher": []
       }
    ]
