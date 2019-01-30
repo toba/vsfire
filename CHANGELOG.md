@@ -1,3 +1,6 @@
+# 1.4.1
+- Merge PR from [mogelbuster](https://github.com/mogelbuster) to clarify the need for file names to end with `.rule` or `.rules`. Thank you mogelbuster!
+
 # 1.4.0
 - Merge PR from [Sam Stern](https://github.com/samtstern) to update the [index specification](https://github.com/firebase/firebase-tools/blob/master/src/firestore/indexes-spec.ts). Thank you Sam!
 - Merge PR from [Konrad Linkowski](https://github.com/KonradLinkowski) to correct grammar note. Thank you Konrad!

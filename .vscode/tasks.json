@@ -10,6 +10,14 @@
          "problemMatcher": []
       },
       {
+         "label": "Login",
+         "command": "vsce",
+         "dependsOn": "Build",
+         "args": ["login", "toba"],
+         "group": "none",
+         "problemMatcher": []
+      },
+      {
          "label": "Package",
          "command": "vsce",
          "args": ["package"],
