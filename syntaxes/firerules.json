@@ -1,99 +1,103 @@
 {
-   "//": "https://manual.macromates.com/en/language_grammars",
-   "comment": "Firestore Rules Syntax: version 1.1",
-   "scopeName": "source.firerules",
-   "fileTypes": ["rule", "rules"],
-   "firstLineMatch": "^service\\scloud\\.firestore\\s{",
-   "foldingStartMarker": "^\\{\\s*$",
-   "foldingStopMarker": "^\\s*\\}",
-   "name": "Firebase Rules",
-   "patterns": [
-      {
-         "match": "\\b(\\d+)\\b",
-         "name": "constant.numeric"
-      },
-      {
-         "match": "\\/\\/.*",
-         "name": "comment"
-      },
-      {
-         "comment": "Basic types",
-         "match": "\\b(request|math|user|duration|string|int|cloud)\\b",
-         "name": "support.type"
-      },
-      {
-         "comment": "Strings",
-         "match": "[\\\"\\'].*?[\\\"\\']",
-         "name": "string.quoted"
-      },
-      {
-         "comment": "Function name",
-         "match": "[\\.\\s\\(]([a-zA-Z]+)(?=\\()",
-         "captures": {
-            "1": { "name": "support.function" }
-         }
-      },
-      {
-         "comment": "Function parameters",
-         "begin": "\\(",
-         "end": "\\)",
-         "patterns": [
-            {
-               "match": "\\b(?<![\\'\\\"])[a-zA-Z0-9_]+(?![\\'\\\"])\\b",
-               "name": "variable.parameter"
-            },
-            {
-               "match": "[\\\"\\'].*?[\\\"\\']",
-               "name": "string.quoted"
-            }
-         ]
-      },
-      {
-         "comment": "Path match literal",
-         "match": "\\/([a-zA-Z0-9_]+)(?=[\\s\\/])",
-         "captures": {
-            "1": { "name": "string.unquoted" }
-         }
-      },
-      {
-         "comment": "Path match variable",
-         "match": "\\/({[^}]+})(?=[\\s\\/])",
-         "captures": {
-            "1": { "name": "variable.parameter" }
-         }
-      },
-      {
-         "comment": "Global functions without parentheses",
-         "match": "^\\s*(service|match|allow)(?=\\s)",
-         "captures": {
-            "1": { "name": "support.function" }
-         }
-      },
-      {
-         "match": "\\b(if|return|is)\\b",
-         "name": "keyword.control"
-      },
-      {
-         "comment": "Access control",
-         "match": "\\s(get|list|read|create|update|delete|write)[,:;]",
-         "captures": {
-            "1": { "name": "storage.modifier" }
-         }
-      },
-      {
-         "match": "(=|!|>|<|\\||&)",
-         "name": "keyword.operator"
-      },
-      {
-         "match": "\\b(true|false|null|in|function)\\b",
-         "name": "constant.language"
-      },
-      {
-         "comment": "Type member",
-         "match": "\\.([a-zA-Z0-9_]+)",
-         "captures": {
-            "1": { "name": "variable.parameter" }
-         }
+  "//": "https://manual.macromates.com/en/language_grammars",
+  "comment": "Firestore Rules Syntax: version 1.1",
+  "scopeName": "source.firerules",
+  "fileTypes": [
+    "rule",
+    "rules"
+  ],
+  "firstLineMatch": "^service\\scloud\\.firestore\\s{",
+  "foldingStartMarker": "^\\{\\s*$",
+  "foldingStopMarker": "^\\s*\\}",
+  "name": "Firebase Rules",
+  "patterns": [
+    {
+      "comment": "Basic types",
+      "match": "\\b(request|math|user|duration|string|int|float|number|cloud|list|map|latlng|timestamp|path)\\b",
+      "name": "support.type"
+    },
+    {
+      "match": "\\b(if|return|is)\\b",
+      "name": "keyword.control"
+    },
+    {
+      "comment": "Function name",
+      "match": "([a-zA-Z_][a-zA-Z_0-9]*)\\s*(?=\\()",
+      "captures": {
+        "1": {
+          "name": "support.function"
+        }
       }
-   ]
+    },
+    {
+      "match": "\\b(\\d+)\\b",
+      "name": "constant.numeric"
+    },
+    {
+      "match": "\\/\\/.*",
+      "name": "comment"
+    },
+    {
+      "comment": "Strings",
+      "match": "[\\\"\\'].*?[\\\"\\']",
+      "name": "string.quoted"
+    },
+    {
+      "comment": "Path match literal",
+      "match": "\\/([a-zA-Z0-9_]+)(?=[\\s\\/])",
+      "captures": {
+        "1": {
+          "name": "string.unquoted"
+        }
+      }
+    },
+    {
+      "comment": "Path match variable",
+      "match": "\\/({[^}]+})(?=[\\s\\/])",
+      "captures": {
+        "1": {
+          "name": "variable.parameter"
+        }
+      }
+    },
+    {
+      "comment": "Global functions without parentheses",
+      "match": "^\\s*(service|match|allow)(?=\\s)",
+      "captures": {
+        "1": {
+          "name": "support.function"
+        }
+      }
+    },
+    {
+      "comment": "Access control",
+      "match": "\\s(get|list|read|create|update|delete|write)[,:;]",
+      "captures": {
+        "1": {
+          "name": "storage.modifier"
+        }
+      }
+    },
+    {
+      "match": "(=|!|>|<|\\||&)",
+      "name": "keyword.operator"
+    },
+    {
+      "match": "\\b(true|false|null|in|function)\\b",
+      "name": "constant.language"
+    },
+    {
+      "comment": "Type member",
+      "match": "\\.([a-zA-Z0-9_]+)\\b(?!\\()",
+      "captures": {
+        "1": {
+          "name": "variable.parameter"
+        }
+      }
+    },
+    {
+      "match": "\\b(?<![\\'\\\"])[a-zA-Z0-9_]+(?![\\'\\\"])\\b",
+      "name": "variable.parameter"
+    }
+  ]
 }
