@@ -9,7 +9,7 @@
             "properties": {
                "collectionGroup": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_]+$",
+                  "pattern": "^[a-zA-Z0-9_-]+$",
                   "description": "The collection group ID to which this index applies."
                },
                "queryScope": {
@@ -52,7 +52,7 @@
             "properties": {
                "collectionGroup": {
                   "type": "string",
-                  "pattern": "^[a-zA-Z0-9_]+$",
+                  "pattern": "^[a-zA-Z0-9_-]+$",
                   "description": "The collection group ID to which this field override applies."
                },
                "fieldPath": {
