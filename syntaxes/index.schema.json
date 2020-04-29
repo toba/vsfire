@@ -79,12 +79,12 @@
                         }
                      },
                      "uniqueItems": true,
-                     "required": ["order", "queryScope"]
+                     "required": ["queryScope"]
                   },
                   "minItems": 0
                }
             },
-            "required": ["collectionGroup", "queryScope", "fields"]
+            "required": ["indexes"]
          },
          "minItems": 0
       }
